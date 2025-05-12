@@ -29,6 +29,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  templates             Template[]             @relation("CreatedTemplates")
 }
 
 model Account {
@@ -85,4 +86,34 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id])
 
   @@unique([userId])
+}
+
+enum TemplateCategory {
+  PROFESSIONAL
+  ACADEMIC
+  CREATIVE
+  TECHNICAL
+  ENTRY_LEVEL
+  EXECUTIVE
+  OTHER
+}
+
+model Template {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  latexCode   String
+  thumbnail   String?          // URL to template thumbnail image
+  category    TemplateCategory @default(PROFESSIONAL)
+  tags        String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  isPublic    Boolean          @default(true)
+  
+  // Relation to the user who created the template
+  createdBy   User             @relation("CreatedTemplates", fields: [userId], references: [id])
+  userId      String           @db.ObjectId
+
+  // For easy identification of admin-created templates
+  isAdminCreated Boolean       @default(false)
 }
