@@ -2,9 +2,9 @@ import { auth } from "@/auth";
 import { db } from "./db";
 
 /**
- * Get the current authenticated user from the session
+ * Get the current user from the session
  */
-export const getCurrentUser = async () => {
+export async function getCurrentUser() {
   try {
     const session = await auth();
 
@@ -13,7 +13,7 @@ export const getCurrentUser = async () => {
     }
 
     const currentUser = await db.user.findUnique({
-      where: { email: session.user.email }
+      where: { email: session.user.email },
     });
 
     if (!currentUser) {
@@ -25,4 +25,4 @@ export const getCurrentUser = async () => {
     console.error("Error getting current user:", error);
     return null;
   }
-}; 
+} 

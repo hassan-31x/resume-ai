@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-
+import Link from "next/link";
 import { getPublicTemplates } from "@/actions/templates";
 import TemplatesGrid from "./components/templates-grid";
 import TemplateFilters from "./components/template-filters";
@@ -34,10 +34,12 @@ export default async function BrowseTemplatesPage() {
             Choose from {templateCount} professionally designed templates.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="gap-2" size="lg">
-              <Plus className="h-4 w-4" />
-              Create Resume
-            </Button>
+            <Link href="/templates/create">
+              <Button className="gap-2" size="lg">
+                <Plus className="h-4 w-4" />
+                Create Template
+              </Button>
+            </Link>
             <Button variant="outline" className="gap-2" size="lg">
               <Search className="h-4 w-4" />
               Browse All Templates
@@ -47,7 +49,15 @@ export default async function BrowseTemplatesPage() {
       </div>
 
       <div className="px-6">
-        <Heading title="Template Gallery" description="Find the perfect resume template for your next opportunity" />
+        <div className="flex items-center justify-between">
+          <Heading title="Template Gallery" description="Find the perfect resume template for your next opportunity" />
+          <Link href="/templates/create">
+            <Button className="gap-2" size="sm">
+              <Plus className="h-4 w-4" />
+              Create Template
+            </Button>
+          </Link>
+        </div>
         <Separator className="my-4" />
       </div>
       
