@@ -50,55 +50,58 @@ const SettingsPage = () => {
   };
 
   return (
-    <Card className="w-[80%] max-w-[800px]">
-      <CardHeader>
-        <p className="text-2xl font-semibold text-center">Settings</p>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="John Doe" disabled={isPending} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-              {!!!user?.isOAuth && (
+    <div className="w-full h-screen flex flex-col items-center justify-center gap-y-10">
+      <Card className="w-[80%] max-w-[800px]">
+        <CardHeader>
+          <p className="text-2xl font-semibold text-center">Settings</p>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className="space-y-6" onSubmit={form.handleSubmit(handleSubmit)}>
+              <div className="space-y-4">
                 <FormField
                   control={form.control}
-                  name="isTwoFactorEnabled"
+                  name="name"
                   render={({ field }) => (
-                    <FormItem className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <div className="space-y-0.5">
-                        <FormLabel>Two Factor Authentication</FormLabel>
-                        <FormDescription>Enable two factor authentication for your account</FormDescription>
-                      </div>
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} disabled={isPending} />
+                        <Input {...field} placeholder="John Doe" disabled={isPending} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 ></FormField>
-              )}
-            </div>
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <Button type="submit" disabled={isPending}>
-              Save
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                {!!!user?.isOAuth && (
+                  <FormField
+                    control={form.control}
+                    name="isTwoFactorEnabled"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>Two Factor Authentication</FormLabel>
+                          <FormDescription>Enable two factor authentication for your account</FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch checked={field.value} onCheckedChange={field.onChange} disabled={isPending} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  ></FormField>
+                )}
+              </div>
+              <FormError message={error} />
+              <FormSuccess message={success} />
+              <Button type="submit" disabled={isPending}>
+                Save
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+
   );
 };
 

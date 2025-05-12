@@ -1,14 +1,9 @@
-import Navbar from './_components/navbar'
+import React from 'react'
 
-type Props = {
-    children: React.ReactNode
-}
-
-const MainLayout = ({ children }: Props) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='h-full w-full flex flex-col items-center justify-center gap-y-10'>
-        <Navbar />
-        {children}
+    <div className='min-h-screen w-full'>
+      {children}
     </div>
   )
 }
