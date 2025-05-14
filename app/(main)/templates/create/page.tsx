@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Metadata } from "next";
 import { useRouter } from "next/navigation";
-import { Loader2, Save, Download, Eye, Code, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Loader2, Save, Download, Eye, Code, ArrowLeft, CheckCircle2, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,95 +20,280 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { TemplateEditor } from "../components/template-editor";
-import { TemplatePreview } from "../components/template-preview";
 import { useToast } from "@/components/ui/use-toast";
 import { createTemplate } from "@/actions/create-template";
 import type { CreateTemplateData } from "@/actions/create-template";
+import HtmlRenderer from "@/components/html-renderer";
 
 export default function CreateTemplatePage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<"editor" | "metadata">("editor");
+  const [activeTab, setActiveTab] = useState<"editor" | "metadata" | "styling">("editor");
   const [isSaving, setIsSaving] = useState(false);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   
   // Template data
-  const [templateData, setTemplateData] = useState<CreateTemplateData>({
+  const [templateData, setTemplateData] = useState<{
+    name: string;
+    description: string;
+    category: "PROFESSIONAL" | "ACADEMIC" | "CREATIVE" | "TECHNICAL" | "ENTRY_LEVEL" | "EXECUTIVE" | "OTHER";
+    tags: string[];
+    htmlContent: string;
+    cssStyles: string;
+    isPublic: boolean;
+    primaryColor: string;
+    secondaryColor: string;
+    fontFamily: string;
+    fontSize: number;
+    lineHeight: number;
+    sectionSpacing: number;
+    itemSpacing: number;
+    thumbnail?: string;
+  }>({
     name: "",
     description: "",
     category: "PROFESSIONAL",
     tags: [],
-    latexCode: `\\documentclass[11pt,a4paper]{article}
-\\usepackage[utf8]{inputenc}
-\\usepackage[margin=1in]{geometry}
-\\usepackage{enumitem}
-\\usepackage{hyperref}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
+    htmlContent: `<div class="resume">
+  <header class="header">
+    <h1>John Doe</h1>
+    <p class="contact-info">
+      123 Main Street, City, State 12345 | (123) 456-7890 | john.doe@email.com | linkedin.com/in/johndoe
+    </p>
+  </header>
+  
+  <section class="resume-section">
+    <h2>Education</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>University of Example</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Bachelor of Science in Computer Science</p>
+        <span class="date">Aug 2018 - May 2022</span>
+      </div>
+      <p>GPA: 3.85/4.0</p>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Experience</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Software Engineer</h3>
+        <span class="location">Tech Company Inc., City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p></p>
+        <span class="date">Jun 2022 - Present</span>
+      </div>
+      <ul>
+        <li>Developed and maintained web applications using React, Node.js, and MongoDB</li>
+        <li>Collaborated with cross-functional teams to design and implement new features</li>
+        <li>Improved application performance by 30% through code optimization</li>
+      </ul>
+    </div>
+    
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Software Engineering Intern</h3>
+        <span class="location">Startup XYZ, City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p></p>
+        <span class="date">May 2021 - Aug 2021</span>
+      </div>
+      <ul>
+        <li>Assisted in developing RESTful APIs using Express.js and MongoDB</li>
+        <li>Implemented responsive UI components using React and Material-UI</li>
+        <li>Participated in daily stand-ups and biweekly sprint planning meetings</li>
+      </ul>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Projects</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Personal Portfolio Website</h3>
+      </div>
+      <ul>
+        <li>Designed and developed a responsive personal portfolio website using React and Tailwind CSS</li>
+        <li>Implemented dark mode and animations using Framer Motion</li>
+        <li>Deployed the website using Vercel with CI/CD pipeline</li>
+      </ul>
+    </div>
+    
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Task Management Application</h3>
+      </div>
+      <ul>
+        <li>Created a full-stack task management application using MERN stack</li>
+        <li>Implemented user authentication using JWT and bcrypt</li>
+        <li>Added features like task categorization, due dates, and notifications</li>
+      </ul>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3>Programming Languages:</h3>
+        <p>JavaScript, TypeScript, Python, Java, C++</p>
+      </div>
+      <div class="skill-category">
+        <h3>Frontend:</h3>
+        <p>React, HTML, CSS, Tailwind CSS, Material-UI</p>
+      </div>
+      <div class="skill-category">
+        <h3>Backend:</h3>
+        <p>Node.js, Express.js, Django, Spring Boot</p>
+      </div>
+      <div class="skill-category">
+        <h3>Databases:</h3>
+        <p>MongoDB, PostgreSQL, MySQL</p>
+      </div>
+      <div class="skill-category">
+        <h3>Tools:</h3>
+        <p>Git, Docker, AWS, Firebase, Jira</p>
+      </div>
+    </div>
+  </section>
+</div>`,
+    cssStyles: `.resume {
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.5in;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: #333;
+  background-color: white;
+}
 
-\\titleformat{\\section}{\\Large\\bfseries}{}{0em}{}[\\titlerule]
-\\titlespacing{\\section}{0pt}{12pt}{8pt}
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-\\begin{document}
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--primary-color);
+}
 
-\\begin{center}
-  {\\LARGE\\textbf{John Doe}}\\\\
-  123 Main Street, City, State 12345\\\\
-  (123) 456-7890 $|$ john.doe@email.com $|$ linkedin.com/in/johndoe
-\\end{center}
+.contact-info {
+  margin-top: 5px;
+  font-size: 12px;
+}
 
-\\section{Education}
-\\textbf{University of Example} \\hfill \\textit{City, State}\\\\
-Bachelor of Science in Computer Science \\hfill \\textit{Aug 2018 - May 2022}\\\\
-GPA: 3.85/4.0
+.resume-section {
+  margin-bottom: var(--section-spacing);
+}
 
-\\section{Experience}
-\\textbf{Software Engineer} \\hfill \\textit{Jun 2022 - Present}\\\\
-\\textit{Tech Company Inc.} \\hfill \\textit{City, State}
-\\begin{itemize}[leftmargin=*]
-  \\item Developed and maintained web applications using React, Node.js, and MongoDB
-  \\item Collaborated with cross-functional teams to design and implement new features
-  \\item Improved application performance by 30\\% through code optimization
-\\end{itemize}
+.resume-section h2 {
+  font-size: 18px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--primary-color);
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
 
-\\textbf{Software Engineering Intern} \\hfill \\textit{May 2021 - Aug 2021}\\\\
-\\textit{Startup XYZ} \\hfill \\textit{City, State}
-\\begin{itemize}[leftmargin=*]
-  \\item Assisted in developing RESTful APIs using Express.js and MongoDB
-  \\item Implemented responsive UI components using React and Material-UI
-  \\item Participated in daily stand-ups and biweekly sprint planning meetings
-\\end{itemize}
+.resume-item {
+  margin-bottom: var(--item-spacing);
+}
 
-\\section{Projects}
-\\textbf{Personal Portfolio Website}
-\\begin{itemize}[leftmargin=*]
-  \\item Designed and developed a responsive personal portfolio website using React and Tailwind CSS
-  \\item Implemented dark mode and animations using Framer Motion
-  \\item Deployed the website using Vercel with CI/CD pipeline
-\\end{itemize}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
-\\textbf{Task Management Application}
-\\begin{itemize}[leftmargin=*]
-  \\item Created a full-stack task management application using MERN stack
-  \\item Implemented user authentication using JWT and bcrypt
-  \\item Added features like task categorization, due dates, and notifications
-\\end{itemize}
+.item-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-\\section{Skills}
-\\textbf{Programming Languages:} JavaScript, TypeScript, Python, Java, C++\\\\
-\\textbf{Frontend:} React, HTML, CSS, Tailwind CSS, Material-UI\\\\
-\\textbf{Backend:} Node.js, Express.js, Django, Spring Boot\\\\
-\\textbf{Databases:} MongoDB, PostgreSQL, MySQL\\\\
-\\textbf{Tools:} Git, Docker, AWS, Firebase, Jira
+.item-subheader {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  margin: 4px 0;
+}
 
-\\end{document}`,
+.item-subheader p {
+  margin: 0;
+}
+
+.location {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.date {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.skill-category h3 {
+  font-size: 14px;
+  margin: 0;
+  display: inline;
+}
+
+.skill-category p {
+  display: inline;
+  margin-left: 5px;
+}
+
+/* CSS Variables for styling */
+:root {
+  --primary-color: var(--primary-color);
+  --secondary-color: var(--secondary-color);
+  --font-family: var(--font-family);
+  --font-size: var(--font-size);
+  --line-height: var(--line-height);
+  --section-spacing: var(--section-spacing);
+  --item-spacing: var(--item-spacing);
+}`,
     isPublic: true,
+    primaryColor: "#4A6CF7",
+    secondaryColor: "#6E82A6",
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 14,
+    lineHeight: 1.5,
+    sectionSpacing: 24,
+    itemSpacing: 12
   });
   
   const [tagInput, setTagInput] = useState("");
   
-  const handleLatexChange = (code: string) => {
-    setTemplateData(prev => ({ ...prev, latexCode: code }));
+  const handleHtmlChange = (code: string) => {
+    setTemplateData(prev => ({ ...prev, htmlContent: code }));
+  };
+  
+  const handleCssChange = (code: string) => {
+    setTemplateData(prev => ({ ...prev, cssStyles: code }));
   };
   
   const handleAddTag = () => {
@@ -127,12 +312,27 @@ GPA: 3.85/4.0
       tags: prev.tags.filter(t => t !== tag)
     }));
   };
+
+  const getComputedCss = () => {
+    return templateData.cssStyles.replace(/var\(--primary-color\)/g, templateData.primaryColor)
+      .replace(/var\(--secondary-color\)/g, templateData.secondaryColor)
+      .replace(/var\(--font-family\)/g, templateData.fontFamily)
+      .replace(/var\(--font-size\)/g, `${templateData.fontSize}px`)
+      .replace(/var\(--line-height\)/g, templateData.lineHeight.toString())
+      .replace(/var\(--section-spacing\)/g, `${templateData.sectionSpacing}px`)
+      .replace(/var\(--item-spacing\)/g, `${templateData.itemSpacing}px`);
+  };
   
   const handleSaveTemplate = async () => {
     setIsSaving(true);
     
     try {
-      const result = await createTemplate(templateData);
+      const result = await createTemplate({
+        ...templateData,
+        // Map to match the expected types in createTemplate
+        htmlContent: templateData.htmlContent,
+        cssStyles: templateData.cssStyles
+      });
       
       if (result.error) {
         toast({
@@ -179,17 +379,29 @@ GPA: 3.85/4.0
           <Button 
             variant="outline" 
             size="sm"
-            onClick={() => setActiveTab(activeTab === "editor" ? "metadata" : "editor")}
+            onClick={() => {
+              const nextTab = activeTab === "editor" 
+                ? "metadata" 
+                : activeTab === "metadata" 
+                  ? "styling" 
+                  : "editor";
+              setActiveTab(nextTab);
+            }}
           >
             {activeTab === "editor" ? (
               <>
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Edit Metadata
               </>
+            ) : activeTab === "metadata" ? (
+              <>
+                <Settings className="h-4 w-4 mr-2" />
+                Edit Styling
+              </>
             ) : (
               <>
                 <Code className="h-4 w-4 mr-2" />
-                Edit LaTeX
+                Edit HTML/CSS
               </>
             )}
           </Button>
@@ -197,7 +409,7 @@ GPA: 3.85/4.0
           <Button 
             size="sm" 
             onClick={handleSaveTemplate}
-            disabled={isSaving || !templateData.name || !templateData.latexCode}
+            disabled={isSaving || !templateData.name || !templateData.htmlContent || !templateData.cssStyles}
           >
             {isSaving ? (
               <>
@@ -214,23 +426,25 @@ GPA: 3.85/4.0
         </div>
       </div>
       
-      <Tabs defaultValue="editor" value={activeTab} onValueChange={(value) => setActiveTab(value as "editor" | "metadata")}>
+      <Tabs defaultValue="editor" value={activeTab} onValueChange={(value) => setActiveTab(value as "editor" | "metadata" | "styling")}>
         <TabsContent value="editor" className="m-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* LaTeX Editor */}
+            {/* Code Editor */}
             <Card className="p-4 h-[calc(100vh-12rem)] flex flex-col">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-medium">LaTeX Editor</h2>
+                <h2 className="text-lg font-medium">HTML/CSS Editor</h2>
                 <Button variant="ghost" size="sm">
                   <Download className="h-4 w-4 mr-2" />
-                  Download LaTeX
+                  Download Code
                 </Button>
               </div>
               <Separator className="my-2" />
               <div className="flex-grow min-h-0">
                 <TemplateEditor
-                  value={templateData.latexCode}
-                  onChange={handleLatexChange}
+                  html={templateData.htmlContent}
+                  css={templateData.cssStyles}
+                  onHtmlChange={handleHtmlChange}
+                  onCssChange={handleCssChange}
                 />
               </div>
             </Card>
@@ -246,10 +460,11 @@ GPA: 3.85/4.0
               </div>
               <Separator className="my-2" />
               <div className="flex-grow min-h-0 overflow-auto bg-white rounded border">
-                <TemplatePreview 
-                  latexCode={templateData.latexCode} 
-                  isLoading={isPreviewLoading}
-                  onLoaded={() => setIsPreviewLoading(false)}
+                <HtmlRenderer 
+                  key={isPreviewLoading ? Date.now() : undefined}
+                  html={templateData.htmlContent} 
+                  css={getComputedCss()}
+                  onRender={() => setIsPreviewLoading(false)}
                 />
               </div>
             </Card>
@@ -284,7 +499,9 @@ GPA: 3.85/4.0
                 <Label htmlFor="category">Category</Label>
                 <Select 
                   value={templateData.category} 
-                  onValueChange={(value) => setTemplateData(prev => ({ ...prev, category: value }))}
+                  onValueChange={(value: "PROFESSIONAL" | "ACADEMIC" | "CREATIVE" | "TECHNICAL" | "ENTRY_LEVEL" | "EXECUTIVE" | "OTHER") => {
+                    setTemplateData(prev => ({ ...prev, category: value }));
+                  }}
                 >
                   <SelectTrigger id="category">
                     <SelectValue placeholder="Select a category" />
@@ -332,6 +549,154 @@ GPA: 3.85/4.0
                     </Badge>
                   ))}
                 </div>
+              </div>
+              
+              <div className="flex justify-end mt-6">
+                <Button
+                  onClick={() => setActiveTab("styling")}
+                  className="min-w-[120px]"
+                >
+                  Next: Styling
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="styling" className="m-0">
+          <Card className="p-6">
+            <div className="max-w-2xl mx-auto space-y-6">
+              <h2 className="text-xl font-semibold mb-4">Template Styling</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="primaryColor">Primary Color</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="primaryColor" 
+                      type="color" 
+                      value={templateData.primaryColor}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
+                      className="w-16 h-10 p-1"
+                    />
+                    <Input 
+                      value={templateData.primaryColor}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="secondaryColor">Secondary Color</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="secondaryColor" 
+                      type="color" 
+                      value={templateData.secondaryColor}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                      className="w-16 h-10 p-1"
+                    />
+                    <Input 
+                      value={templateData.secondaryColor}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="fontFamily">Font Family</Label>
+                  <Select 
+                    value={templateData.fontFamily} 
+                    onValueChange={(value) => setTemplateData(prev => ({ ...prev, fontFamily: value }))}
+                  >
+                    <SelectTrigger id="fontFamily">
+                      <SelectValue placeholder="Select a font" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="'Inter', sans-serif">Inter</SelectItem>
+                      <SelectItem value="'Arial', sans-serif">Arial</SelectItem>
+                      <SelectItem value="'Helvetica', sans-serif">Helvetica</SelectItem>
+                      <SelectItem value="'Georgia', serif">Georgia</SelectItem>
+                      <SelectItem value="'Roboto', sans-serif">Roboto</SelectItem>
+                      <SelectItem value="'Lato', sans-serif">Lato</SelectItem>
+                      <SelectItem value="'Open Sans', sans-serif">Open Sans</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="fontSize">Font Size (px)</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="fontSize" 
+                      type="number" 
+                      min="10" 
+                      max="20" 
+                      value={templateData.fontSize}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, fontSize: parseInt(e.target.value) || 14 }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="lineHeight">Line Height</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="lineHeight" 
+                      type="number" 
+                      min="1" 
+                      max="2" 
+                      step="0.1" 
+                      value={templateData.lineHeight}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, lineHeight: parseFloat(e.target.value) || 1.5 }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="sectionSpacing">Section Spacing (px)</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="sectionSpacing" 
+                      type="number" 
+                      min="10" 
+                      max="50"
+                      value={templateData.sectionSpacing}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, sectionSpacing: parseInt(e.target.value) || 24 }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="itemSpacing">Item Spacing (px)</Label>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      id="itemSpacing" 
+                      type="number" 
+                      min="5" 
+                      max="30"
+                      value={templateData.itemSpacing}
+                      onChange={(e) => setTemplateData(prev => ({ ...prev, itemSpacing: parseInt(e.target.value) || 12 }))}
+                      className="flex-grow"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <Card className="overflow-hidden">
+                  <div className="h-48 overflow-auto">
+                    <HtmlRenderer 
+                      html={templateData.htmlContent} 
+                      css={getComputedCss()}
+                    />
+                  </div>
+                </Card>
               </div>
               
               <div className="flex justify-end mt-6">

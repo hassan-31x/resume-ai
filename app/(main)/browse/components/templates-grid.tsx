@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { PlusCircle, Eye, FileEdit, Clock, User, Award } from "lucide-react";
+import { PlusCircle, Eye, FileEdit, Clock, User, Award, Palette } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -123,6 +123,21 @@ export default function TemplatesGrid({ templates, error }: TemplatesGridProps) 
                   <Clock className="h-3 w-3" />
                   <span>{formatDistanceToNow(new Date(template.createdAt), { addSuffix: true })}</span>
                 </div>
+              </div>
+              <div className="flex items-center gap-2 mt-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <div 
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: template.primaryColor }}
+                  />
+                  <div 
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: template.secondaryColor }}
+                  />
+                </div>
+                {/* <span className="text-muted-foreground">
+                  {template.fontFamily.split(',')[0].replace(/'/g, '')}
+                </span> */}
               </div>
             </CardContent>
             <CardFooter className="p-4 flex justify-between">

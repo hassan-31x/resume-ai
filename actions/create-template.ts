@@ -16,7 +16,8 @@ export type CreateTemplateResponse = {
 const TemplateSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  latexCode: z.string().min(1, { message: "LaTeX code is required" }),
+  htmlContent: z.string().min(1, { message: "HTML content is required" }),
+  cssStyles: z.string().min(1, { message: "CSS styles are required" }),
   thumbnail: z.string().optional(),
   category: z.enum([
     "PROFESSIONAL", 
@@ -29,6 +30,13 @@ const TemplateSchema = z.object({
   ]),
   tags: z.array(z.string()).default([]),
   isPublic: z.boolean().default(true),
+  primaryColor: z.string().default("#4A6CF7"),
+  secondaryColor: z.string().default("#6E82A6"),
+  fontFamily: z.string().default("'Inter', sans-serif"),
+  fontSize: z.number().int().positive().default(14),
+  lineHeight: z.number().positive().default(1.5),
+  sectionSpacing: z.number().int().positive().default(24),
+  itemSpacing: z.number().int().positive().default(12)
 });
 
 export type CreateTemplateData = z.infer<typeof TemplateSchema>;
@@ -58,12 +66,20 @@ export async function createTemplate(data: CreateTemplateData): Promise<CreateTe
       data: {
         name: validatedData.data.name,
         description: validatedData.data.description,
-        latexCode: validatedData.data.latexCode,
+        htmlContent: validatedData.data.htmlContent,
+        cssStyles: validatedData.data.cssStyles,
         thumbnail: validatedData.data.thumbnail,
         category: validatedData.data.category as TemplateCategory,
         tags: validatedData.data.tags,
         isPublic: validatedData.data.isPublic,
         isAdminCreated: user.role === "ADMIN",
+        primaryColor: validatedData.data.primaryColor,
+        secondaryColor: validatedData.data.secondaryColor,
+        fontFamily: validatedData.data.fontFamily,
+        fontSize: validatedData.data.fontSize,
+        lineHeight: validatedData.data.lineHeight,
+        sectionSpacing: validatedData.data.sectionSpacing,
+        itemSpacing: validatedData.data.itemSpacing,
         userId: user.id,
       },
     });

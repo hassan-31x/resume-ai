@@ -14,6 +14,10 @@ Welcome to the NextAuth Starter Kit! This is an open-source authentication templ
 - **Forgot Password**
 - **Edit User Information**
 - **Server & Client-side Authorization**
+- **HTML/CSS Resume Template System**
+  - Create and edit resume templates using HTML and CSS
+  - Real-time preview of templates
+  - Template sharing and reuse
 
 ## Technologies Used
 
@@ -22,6 +26,8 @@ Welcome to the NextAuth Starter Kit! This is an open-source authentication templ
 - **TypeScript** for Type Safety
 - **ShadcnUI** and **TailwindCSS** for UI Components
 - **MongoDB** with **Prisma** ORM for Database Management
+- **Monaco Editor** for HTML/CSS editing
+- **HTML/CSS** based resume template system
 
 ## MongoDB Implementation Notes
 
@@ -30,6 +36,24 @@ This project uses MongoDB as the database backend. Since MongoDB with Prisma has
 - **Manual Cascade Deletions**: MongoDB doesn't support `onDelete: Cascade` in Prisma, so we've implemented manual cascading in application code.
 - **ObjectId Validation**: Added validation for MongoDB ObjectIds before database operations.
 - **Connection String Format**: Uses the MongoDB connection string format.
+
+## Resume Template System
+
+The project includes a robust HTML/CSS-based template system for creating and customizing resumes:
+
+- **HTML/CSS Editor**: Create and modify resume templates using a professional code editor with syntax highlighting
+- **Real-time Preview**: See your changes instantly with a live preview
+- **Variable Styling**: Templates support customizable styling parameters like primary color, font family, and spacing
+- **Template Management**: Save, load, and share templates with other users
+- **Export Functionality**: Download HTML and CSS files for your templates
+
+### Using the Template System
+
+1. Navigate to `/templates/create` to create a new template
+2. Use the HTML/CSS editor to design your template
+3. Configure metadata and styling options
+4. Save and publish your template
+5. Browse templates at `/browse` to view, use, or customize existing templates
 
 ## Getting Started
 
@@ -88,7 +112,13 @@ Create a .env.local file in the root of your project and add the following:
    npx prisma db push
    ```
 
-6. Start the development server
+6. Seed the database with initial templates
+
+   ```bash
+   node prisma/seed.js
+   ```
+
+7. Start the development server
 
     ```bash
    npm run dev
@@ -104,6 +134,8 @@ Your app should now be running on [http://localhost:3000](http://localhost:3000)
 - **Email Verification:** Configure the Resend API key and `FROM_EMAIL` for email verification.
 - **Two-Factor Authentication:** The implementation is ready for use once you complete the basic setup.
 - **Edit User Information:** Accessible after logging in.
+- **Create Resume Templates:** Navigate to `/templates/create` to design and create templates using HTML and CSS.
+- **Browse Templates:** Visit `/browse` to see available templates.
 
 ## Contributing
 
@@ -121,5 +153,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [TailwindCSS](https://tailwindcss.com/)
 - [ShadcnUI](https://shadcn.dev/)
 - [Resend](https://resend.com/)
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/)
 
 

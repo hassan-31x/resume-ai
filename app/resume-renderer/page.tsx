@@ -1,172 +1,354 @@
 'use client';
 
 import { useState } from 'react';
-import LatexRenderer from '@/components/latex-renderer';
+import HtmlRenderer from '@/components/html-renderer';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/components/ui/use-toast';
+import { FileDown, Eye, Code, RefreshCw } from 'lucide-react';
+import Editor from "@monaco-editor/react";
 
 export default function ResumeRendererPage() {
-  const [latexCode, setLatexCode] = useState<string>(`%-------------------------
-% Resume in Latex
-% Author : Jake Gutierrez
-% Based off of: https://github.com/sb2nov/resume
-% License : MIT
-%------------------------
+  const { toast } = useToast();
+  const [htmlContent, setHtmlContent] = useState<string>(`<div class="resume">
+  <header class="header">
+    <h1>John Doe</h1>
+    <p class="contact-info">
+      123 Main Street, City, State 12345 | (123) 456-7890 | john.doe@email.com | linkedin.com/in/johndoe
+    </p>
+  </header>
+  
+  <section class="resume-section">
+    <h2>Education</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>University of Example</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Bachelor of Science in Computer Science</p>
+        <span class="date">Aug 2018 - May 2022</span>
+      </div>
+      <p>GPA: 3.85/4.0</p>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Experience</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Software Engineer</h3>
+        <span class="location">Tech Company Inc., City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p></p>
+        <span class="date">Jun 2022 - Present</span>
+      </div>
+      <ul>
+        <li>Developed and maintained web applications using React, Node.js, and MongoDB</li>
+        <li>Collaborated with cross-functional teams to design and implement new features</li>
+        <li>Improved application performance by 30% through code optimization</li>
+      </ul>
+    </div>
+    
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Software Engineering Intern</h3>
+        <span class="location">Startup XYZ, City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p></p>
+        <span class="date">May 2021 - Aug 2021</span>
+      </div>
+      <ul>
+        <li>Assisted in developing RESTful APIs using Express.js and MongoDB</li>
+        <li>Implemented responsive UI components using React and Material-UI</li>
+        <li>Participated in daily stand-ups and biweekly sprint planning meetings</li>
+      </ul>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3>Programming Languages:</h3>
+        <p>JavaScript, TypeScript, Python, Java, C++</p>
+      </div>
+      <div class="skill-category">
+        <h3>Frontend:</h3>
+        <p>React, HTML, CSS, Tailwind CSS, Material-UI</p>
+      </div>
+      <div class="skill-category">
+        <h3>Backend:</h3>
+        <p>Node.js, Express.js, Django, Spring Boot</p>
+      </div>
+      <div class="skill-category">
+        <h3>Databases:</h3>
+        <p>MongoDB, PostgreSQL, MySQL</p>
+      </div>
+      <div class="skill-category">
+        <h3>Tools:</h3>
+        <p>Git, Docker, AWS, Firebase, Jira</p>
+      </div>
+    </div>
+  </section>
+</div>`);
 
-\\documentclass[letterpaper,11pt]{article}
-
-\\usepackage{latexsym}
-\\usepackage[empty]{fullpage}
-\\usepackage{titlesec}
-\\usepackage{marvosym}
-\\usepackage[usenames,dvipsnames]{color}
-\\usepackage{verbatim}
-\\usepackage{enumitem}
-\\usepackage[hidelinks]{hyperref}
-\\usepackage{fancyhdr}
-\\usepackage[english]{babel}
-\\usepackage{tabularx}
-\\input{glyphtounicode}
-
-
-%----------FONT OPTIONS----------
-% sans-serif
-% \\usepackage[sfdefault]{FiraSans}
-% \\usepackage[sfdefault]{roboto}
-% \\usepackage[sfdefault]{noto-sans}
-% \\usepackage[default]{sourcesanspro}
-
-% serif
-% \\usepackage{CormorantGaramond}
-% \\usepackage{charter}
-
-
-\\pagestyle{fancy}
-\\fancyhf{} % clear all header and footer fields
-\\fancyfoot{}
-\\renewcommand{\\headrulewidth}{0pt}
-\\renewcommand{\\footrulewidth}{0pt}
-
-% Adjust margins
-\\addtolength{\\oddsidemargin}{-0.5in}
-\\addtolength{\\evensidemargin}{-0.5in}
-\\addtolength{\\textwidth}{1in}
-\\addtolength{\\topmargin}{-.5in}
-\\addtolength{\\textheight}{1.0in}
-
-\\urlstyle{same}
-
-\\raggedbottom
-\\raggedright
-\\setlength{\\tabcolsep}{0in}
-
-% Sections formatting
-\\titleformat{\\section}{
-  \\vspace{-4pt}\\scshape\\raggedright\\large
-}{}{0em}{}[\\color{black}\\titlerule \\vspace{-5pt}]
-
-% Ensure that generate pdf is machine readable/ATS parsable
-\\pdfgentounicode=1
-
-%-------------------------
-% Custom commands
-\\newcommand{\\resumeItem}[1]{
-  \\item\\small{
-    {#1 \\vspace{-2pt}}
-  }
+  const [cssStyles, setCssStyles] = useState<string>(`.resume {
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.5in;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: white;
 }
 
-\\newcommand{\\resumeSubheading}[4]{
-  \\vspace{-2pt}\\item
-    \\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
-      \\textbf{#1} & #2 \\\\
-      \\textit{\\small#3} & \\textit{\\small #4} \\\\
-    \\end{tabular*}\\vspace{-7pt}
+.header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-\\newcommand{\\resumeSubSubheading}[2]{
-    \\item
-    \\begin{tabular*}{0.97\\textwidth}{l@{\\extracolsep{\\fill}}r}
-      \\textit{\\small#1} & \\textit{\\small #2} \\\\
-    \\end{tabular*}\\vspace{-7pt}
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #4A6CF7;
 }
 
-\\newcommand{\\resumeProjectHeading}[2]{
-    \\item
-    \\begin{tabular*}{0.97\\textwidth}{l@{\\extracolsep{\\fill}}r}
-      \\small#1 & #2 \\\\
-    \\end{tabular*}\\vspace{-7pt}
+.contact-info {
+  margin-top: 5px;
+  font-size: 12px;
 }
 
-\\newcommand{\\resumeSubItem}[1]{\\resumeItem{#1}\\vspace{-4pt}}
+.resume-section {
+  margin-bottom: 24px;
+}
 
-\\renewcommand\\labelitemii{$\\vcenter{\\hbox{\\tiny$\\bullet$}}$}
+.resume-section h2 {
+  font-size: 18px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #4A6CF7;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  color: #4A6CF7;
+}
 
-\\newcommand{\\resumeSubHeadingListStart}{\\begin{itemize}[leftmargin=0.15in, label={}]}
-\\newcommand{\\resumeSubHeadingListEnd}{\\end{itemize}}
-\\newcommand{\\resumeItemListStart}{\\begin{itemize}}
-\\newcommand{\\resumeItemListEnd}{\\end{itemize}\\vspace{-5pt}}
+.resume-item {
+  margin-bottom: 12px;
+}
 
-%-------------------------------------------
-%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
+.item-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-\\begin{document}
+.item-subheader {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  margin: 4px 0;
+}
 
-%
-%-----------PROGRAMMING SKILLS-----------
-\\section{Technical Skills}
- \\begin{itemize}[leftmargin=0.15in, label={}]
-    \\small{\\item{
-     \\textbf{Languages}{: Java, Python, C/C++, SQL (Postgres), JavaScript, HTML/CSS, R} \\\\
-     \\textbf{Frameworks}{: React, Node.js, Flask, JUnit, WordPress, Material-UI, FastAPI} \\\\
-     \\textbf{Developer Tools}{: Git, Docker, TravisCI, Google Cloud Platform, VS Code, Visual Studio, PyCharm, IntelliJ, Eclipse} \\\\
-     \\textbf{Libraries}{: pandas, NumPy, Matplotlib}
-    }}
- \\end{itemize}
+.item-subheader p {
+  margin: 0;
+}
 
+.location {
+  color: #6E82A6;
+  font-size: 14px;
+}
 
-%-------------------------------------------
-\\end{document}`);
+.date {
+  color: #6E82A6;
+  font-size: 14px;
+}
+
+ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.skill-category h3 {
+  font-size: 14px;
+  margin: 0;
+  display: inline;
+}
+
+.skill-category p {
+  display: inline;
+  margin-left: 5px;
+}`);
 
   const [isRendering, setIsRendering] = useState(false);
+  const [key, setKey] = useState<number>(0);
 
   const handleRender = () => {
     setIsRendering(true);
+    setKey(prev => prev + 1); // Force re-render
+    setTimeout(() => setIsRendering(false), 500);
+    toast({
+      title: "Preview updated",
+      description: "The resume preview has been refreshed with your changes.",
+    });
+  };
+
+  const handleDownloadHTML = () => {
+    const blob = new Blob([htmlContent], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "resume.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "HTML downloaded",
+      description: "Your HTML content has been downloaded successfully.",
+    });
+  };
+
+  const handleDownloadCSS = () => {
+    const blob = new Blob([cssStyles], { type: "text/css" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "resume.css";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "CSS downloaded",
+      description: "Your CSS styles have been downloaded successfully.",
+    });
   };
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      <h1 className="text-3xl font-bold">LaTeX Resume Renderer</h1>
+    <div className="container mx-auto py-8 space-y-8 max-w-7xl px-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <h1 className="text-3xl font-bold">Resume HTML/CSS Editor</h1>
+        <div className="flex gap-2">
+          <Button onClick={handleRender} disabled={isRendering}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh Preview
+          </Button>
+        </div>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>LaTeX Code</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Textarea 
-              value={latexCode}
-              onChange={(e) => setLatexCode(e.target.value)}
-              className="font-mono h-[500px] overflow-auto"
-            />
-            <Button 
-              className="mt-4 w-full"
-              onClick={handleRender}
-              disabled={isRendering}
-            >
-              Render LaTeX
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="flex flex-col space-y-4">
+          <Tabs defaultValue="html">
+            <div className="flex items-center justify-between mb-2">
+              <TabsList>
+                <TabsTrigger value="html" className="flex items-center">
+                  <Code className="h-4 w-4 mr-2" />
+                  HTML
+                </TabsTrigger>
+                <TabsTrigger value="css" className="flex items-center">
+                  <Code className="h-4 w-4 mr-2" />
+                  CSS
+                </TabsTrigger>
+              </TabsList>
+              
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={handleDownloadHTML}>
+                  <FileDown className="h-4 w-4 mr-1" /> HTML
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleDownloadCSS}>
+                  <FileDown className="h-4 w-4 mr-1" /> CSS
+                </Button>
+              </div>
+            </div>
+            
+            <TabsContent value="html">
+              <Card>
+                <CardContent className="p-0 h-[calc(100vh-250px)]">
+                  <Editor
+                    height="100%"
+                    defaultLanguage="html"
+                    value={htmlContent}
+                    onChange={(value) => setHtmlContent(value || "")}
+                    options={{
+                      minimap: { enabled: false },
+                      scrollBeyondLastLine: false,
+                      fontSize: 14,
+                      lineNumbers: "on",
+                      wordWrap: "on",
+                      automaticLayout: true,
+                    }}
+                    theme="vs-dark"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="css">
+              <Card>
+                <CardContent className="p-0 h-[calc(100vh-250px)]">
+                  <Editor
+                    height="100%"
+                    defaultLanguage="css"
+                    value={cssStyles}
+                    onChange={(value) => setCssStyles(value || "")}
+                    options={{
+                      minimap: { enabled: false },
+                      scrollBeyondLastLine: false,
+                      fontSize: 14,
+                      lineNumbers: "on",
+                      wordWrap: "on",
+                      automaticLayout: true,
+                    }}
+                    theme="vs-dark"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
         
         <Card>
-          <CardHeader>
-            <CardTitle>Preview</CardTitle>
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="flex items-center">
+                <Eye className="h-5 w-5 mr-2" />
+                Preview
+              </CardTitle>
+            </div>
           </CardHeader>
-          <CardContent>
-            <LatexRenderer latexCode={latexCode} />
+          <Separator />
+          <CardContent className="pt-6">
+            <div className="h-[calc(100vh-250px)] overflow-auto border rounded-md bg-white">
+              <HtmlRenderer 
+                key={key} 
+                html={htmlContent} 
+                css={cssStyles} 
+              />
+            </div>
           </CardContent>
         </Card>
       </div>

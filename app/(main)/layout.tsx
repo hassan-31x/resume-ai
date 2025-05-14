@@ -1,8 +1,8 @@
 import React from 'react'
 
-
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import AppSidebar from '@/components/app-sidebar'
+import { Toaster } from '@/components/ui/toaster'
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,6 +14,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </SidebarProvider>
+      <Toaster />
     </div>
   )
 }

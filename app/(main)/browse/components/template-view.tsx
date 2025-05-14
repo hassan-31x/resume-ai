@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Template } from "@prisma/client";
@@ -8,9 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileEdit, User, Calendar, Eye, Code, Download, Star } from "lucide-react";
+import { FileEdit, User, Calendar, Eye, Code, Download, Star, Check } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import HtmlRenderer from "@/components/html-renderer";
+import { useToast } from "@/components/ui/use-toast";
 
 type TemplateWithCreator = Template & {
   createdBy: {
@@ -25,7 +27,11 @@ interface TemplateViewProps {
 
 export default function TemplateView({ template }: TemplateViewProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0);
+  const [renderError, setRenderError] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("preview");
   
   const handleUseTemplate = () => {
     setIsLoading(true);
@@ -39,6 +45,43 @@ export default function TemplateView({ template }: TemplateViewProps) {
       day: "numeric",
     });
   };
+
+  const handleRenderError = () => {
+    setRenderError(true);
+  };
+
+  const handleRenderSuccess = () => {
+    setRenderError(false);
+  };
+
+  // Copy content to clipboard
+  const copyToClipboard = (content: string, type: string) => {
+    navigator.clipboard.writeText(content)
+      .then(() => {
+        toast({
+          title: "Content copied",
+          description: `${type} copied to clipboard!`,
+        });
+      })
+      .catch((err) => {
+        console.error('Failed to copy content: ', err);
+        toast({
+          title: "Failed to copy content",
+          description: "Failed to copy content to clipboard",
+        });
+      });
+  };
+
+  // Apply styling variables to the CSS
+  const getComputedCss = () => {
+    return template.cssStyles.replace(/var\(--primary-color\)/g, template.primaryColor)
+      .replace(/var\(--secondary-color\)/g, template.secondaryColor)
+      .replace(/var\(--font-family\)/g, template.fontFamily)
+      .replace(/var\(--font-size\)/g, `${template.fontSize}px`)
+      .replace(/var\(--line-height\)/g, template.lineHeight.toString())
+      .replace(/var\(--section-spacing\)/g, `${template.sectionSpacing}px`)
+      .replace(/var\(--item-spacing\)/g, `${template.itemSpacing}px`);
+  };
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
@@ -46,21 +89,34 @@ export default function TemplateView({ template }: TemplateViewProps) {
       <div className="flex flex-col space-y-4">
         <Card className="overflow-hidden">
           <CardContent className="p-6">
-            <Tabs defaultValue="preview" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="preview" className="flex items-center">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Preview
-                </TabsTrigger>
-                <TabsTrigger value="code" className="flex items-center">
-                  <Code className="mr-2 h-4 w-4" />
-                  LaTeX Code
-                </TabsTrigger>
-              </TabsList>
+            <Tabs defaultValue="preview" className="w-full" onValueChange={setActiveTab}>
+              <div className="flex items-center justify-between mb-6">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="preview" className="flex items-center">
+                    <Eye className="mr-2 h-4 w-4" />
+                    Preview
+                  </TabsTrigger>
+                  <TabsTrigger value="code" className="flex items-center">
+                    <Code className="mr-2 h-4 w-4" />
+                    Code
+                  </TabsTrigger>
+                </TabsList>
+                
+                {activeTab === "preview" && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setPreviewKey(prev => prev + 1)}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Refresh Preview
+                  </Button>
+                )}
+              </div>
               
               <TabsContent value="preview" className="mt-4">
-                <div className="bg-card p-4 rounded-md border min-h-[600px] flex items-center justify-center">
-                  {template.thumbnail ? (
+                <div className="bg-card p-4 rounded-md border min-h-[600px]">
+                  {renderError && template.thumbnail ? (
                     <div className="relative w-full h-[600px]">
                       <Image
                         src={template.thumbnail}
@@ -69,34 +125,63 @@ export default function TemplateView({ template }: TemplateViewProps) {
                         className="object-contain"
                         sizes="(max-width: 768px) 100vw, 800px"
                       />
+                      <div className="absolute bottom-0 left-0 right-0 bg-background/80 p-2 text-center text-sm text-muted-foreground">
+                        Showing thumbnail image as fallback. The HTML content could not be rendered.
+                      </div>
                     </div>
                   ) : (
-                    <div className="text-center text-muted-foreground flex flex-col items-center justify-center">
-                      <FileEdit className="h-16 w-16 mb-4 opacity-20" />
-                      <p>Preview not available</p>
-                      <p className="text-sm mt-2">Please check the LaTeX code for details</p>
+                    <div className="w-full h-[600px] overflow-auto">
+                      <HtmlRenderer 
+                        key={previewKey}
+                        html={template.htmlContent} 
+                        css={getComputedCss()} 
+                        onError={handleRenderError}
+                        onRender={handleRenderSuccess}
+                      />
                     </div>
                   )}
                 </div>
               </TabsContent>
               
               <TabsContent value="code" className="mt-4">
-                <div className="bg-zinc-950 text-zinc-50 p-4 rounded-md overflow-auto max-h-[600px] relative group">
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button size="icon" variant="ghost" className="h-8 w-8 text-zinc-400 hover:text-zinc-100">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Copy to clipboard</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div className="bg-zinc-950 text-zinc-50 p-4 rounded-md overflow-auto max-h-[400px] relative group">
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button size="icon" variant="ghost" className="h-8 w-8 text-zinc-400 hover:text-zinc-100" onClick={() => copyToClipboard(template.htmlContent, "HTML")}>
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Copy HTML</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <h3 className="text-sm font-medium text-zinc-400 mb-2">HTML</h3>
+                    <pre className="font-mono text-sm whitespace-pre-wrap">{template.htmlContent}</pre>
                   </div>
-                  <pre className="font-mono text-sm whitespace-pre-wrap">{template.latexCode}</pre>
+                  
+                  <div className="bg-zinc-950 text-zinc-50 p-4 rounded-md overflow-auto max-h-[400px] relative group">
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button size="icon" variant="ghost" className="h-8 w-8 text-zinc-400 hover:text-zinc-100" onClick={() => copyToClipboard(template.cssStyles, "CSS")}>
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Copy CSS</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <h3 className="text-sm font-medium text-zinc-400 mb-2">CSS</h3>
+                    <pre className="font-mono text-sm whitespace-pre-wrap">{template.cssStyles}</pre>
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>
@@ -154,6 +239,29 @@ export default function TemplateView({ template }: TemplateViewProps) {
                 </div>
               </div>
             )}
+
+            <div>
+              <h3 className="text-sm font-semibold mb-2">Styling</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-4 h-4 rounded-full" 
+                    style={{ backgroundColor: template.primaryColor }}
+                  />
+                  <span className="text-xs">Primary Color</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-4 h-4 rounded-full" 
+                    style={{ backgroundColor: template.secondaryColor }}
+                  />
+                  <span className="text-xs">Secondary Color</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-xs">Font: {template.fontFamily.split(',')[0].replace(/'/g, '')}</span>
+                </div>
+              </div>
+            </div>
             
             <Button 
               className="w-full mt-6" 
