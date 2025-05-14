@@ -164,11 +164,11 @@ export default function CreateTemplatePage() {
   </section>
 </div>`,
     cssStyles: `.resume {
-  max-width: 8.5in;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0.5in;
+  padding: 5%;
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-size: 1em;
   line-height: var(--line-height);
   color: #333;
   background-color: white;
@@ -176,18 +176,18 @@ export default function CreateTemplatePage() {
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.5em;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 1.8em;
   color: var(--primary-color);
 }
 
 .contact-info {
-  margin-top: 5px;
-  font-size: 12px;
+  margin-top: 0.4em;
+  font-size: 0.85em;
 }
 
 .resume-section {
@@ -195,11 +195,11 @@ export default function CreateTemplatePage() {
 }
 
 .resume-section h2 {
-  font-size: 18px;
+  font-size: 1.2em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--primary-color);
-  padding-bottom: 4px;
-  margin-bottom: 12px;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.8em;
   color: var(--primary-color);
 }
 
@@ -215,7 +215,7 @@ export default function CreateTemplatePage() {
 
 .item-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -223,7 +223,7 @@ export default function CreateTemplatePage() {
   display: flex;
   justify-content: space-between;
   font-style: italic;
-  margin: 4px 0;
+  margin: 0.3em 0;
 }
 
 .item-subheader p {
@@ -232,38 +232,38 @@ export default function CreateTemplatePage() {
 
 .location {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 .date {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 ul {
-  margin: 8px 0;
-  padding-left: 20px;
+  margin: 0.6em 0;
+  padding-left: 1.5em;
 }
 
 li {
-  margin-bottom: 4px;
+  margin-bottom: 0.3em;
 }
 
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 1em;
 }
 
 .skill-category h3 {
-  font-size: 14px;
+  font-size: 0.95em;
   margin: 0;
   display: inline;
 }
 
 .skill-category p {
   display: inline;
-  margin-left: 5px;
+  margin-left: 0.3em;
 }
 
 /* CSS Variables for styling */
@@ -459,13 +459,24 @@ li {
                 </Button>
               </div>
               <Separator className="my-2" />
-              <div className="flex-grow min-h-0 overflow-auto bg-white rounded border">
-                <HtmlRenderer 
-                  key={isPreviewLoading ? Date.now() : undefined}
-                  html={templateData.htmlContent} 
-                  css={getComputedCss()}
-                  onRender={() => setIsPreviewLoading(false)}
-                />
+              <div className="flex-grow min-h-0 overflow-auto bg-white rounded border flex justify-center items-center p-4">
+                <div 
+                  className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
+                  style={{
+                    width: '100%',
+                    maxWidth: '420px',
+                    height: 'auto',
+                    aspectRatio: '1/1.414',
+                    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <HtmlRenderer 
+                    key={isPreviewLoading ? Date.now() : undefined}
+                    html={templateData.htmlContent} 
+                    css={getComputedCss()}
+                    onRender={() => setIsPreviewLoading(false)}
+                  />
+                </div>
               </div>
             </Card>
           </div>
@@ -690,11 +701,22 @@ li {
               
               <div className="pt-4">
                 <Card className="overflow-hidden">
-                  <div className="h-48 overflow-auto">
-                    <HtmlRenderer 
-                      html={templateData.htmlContent} 
-                      css={getComputedCss()}
-                    />
+                  <div className="flex justify-center items-center p-4 bg-white">
+                    <div 
+                      className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
+                      style={{
+                        width: '100%',
+                        maxWidth: '420px',
+                        height: 'auto',
+                        aspectRatio: '1/1.414',
+                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
+                      }}
+                    >
+                      <HtmlRenderer 
+                        html={templateData.htmlContent} 
+                        css={getComputedCss()}
+                      />
+                    </div>
                   </div>
                 </Card>
               </div>

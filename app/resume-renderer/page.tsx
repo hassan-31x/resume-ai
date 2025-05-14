@@ -99,11 +99,11 @@ export default function ResumeRendererPage() {
 </div>`);
 
   const [cssStyles, setCssStyles] = useState<string>(`.resume {
-  max-width: 8.5in;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0.5in;
+  padding: 5%;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 1em;
   line-height: 1.5;
   color: #333;
   background-color: white;
@@ -111,35 +111,35 @@ export default function ResumeRendererPage() {
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.5em;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 1.8em;
   color: #4A6CF7;
 }
 
 .contact-info {
-  margin-top: 5px;
-  font-size: 12px;
+  margin-top: 0.4em;
+  font-size: 0.85em;
 }
 
 .resume-section {
-  margin-bottom: 24px;
+  margin-bottom: 1.5em;
 }
 
 .resume-section h2 {
-  font-size: 18px;
+  font-size: 1.2em;
   text-transform: uppercase;
   border-bottom: 1px solid #4A6CF7;
-  padding-bottom: 4px;
-  margin-bottom: 12px;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.8em;
   color: #4A6CF7;
 }
 
 .resume-item {
-  margin-bottom: 12px;
+  margin-bottom: 0.75em;
 }
 
 .item-header {
@@ -150,7 +150,7 @@ export default function ResumeRendererPage() {
 
 .item-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -158,7 +158,7 @@ export default function ResumeRendererPage() {
   display: flex;
   justify-content: space-between;
   font-style: italic;
-  margin: 4px 0;
+  margin: 0.3em 0;
 }
 
 .item-subheader p {
@@ -167,39 +167,40 @@ export default function ResumeRendererPage() {
 
 .location {
   color: #6E82A6;
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 .date {
   color: #6E82A6;
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 ul {
-  margin: 8px 0;
-  padding-left: 20px;
+  margin: 0.6em 0;
+  padding-left: 1.5em;
 }
 
 li {
-  margin-bottom: 4px;
+  margin-bottom: 0.3em;
 }
 
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 1em;
 }
 
 .skill-category h3 {
-  font-size: 14px;
+  font-size: 0.95em;
   margin: 0;
   display: inline;
 }
 
 .skill-category p {
   display: inline;
-  margin-left: 5px;
-}`);
+  margin-left: 0.3em;
+}
+`);
 
   const [isRendering, setIsRendering] = useState(false);
   const [key, setKey] = useState<number>(0);
@@ -308,7 +309,7 @@ li {
             </TabsContent>
             
             <TabsContent value="css">
-              <Card>
+        <Card>
                 <CardContent className="p-0 h-[calc(100vh-250px)]">
                   <Editor
                     height="100%"
@@ -325,8 +326,8 @@ li {
                     }}
                     theme="vs-dark"
                   />
-                </CardContent>
-              </Card>
+          </CardContent>
+        </Card>
             </TabsContent>
           </Tabs>
         </div>
@@ -342,12 +343,23 @@ li {
           </CardHeader>
           <Separator />
           <CardContent className="pt-6">
-            <div className="h-[calc(100vh-250px)] overflow-auto border rounded-md bg-white">
-              <HtmlRenderer 
-                key={key} 
-                html={htmlContent} 
-                css={cssStyles} 
-              />
+            <div className="h-[calc(100vh-250px)] overflow-auto border rounded-md bg-white flex justify-center items-center p-4">
+              <div 
+                className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
+                style={{
+                  width: '100%',
+                  maxWidth: '420px',
+                  height: 'auto',
+                  aspectRatio: '1/1.414',
+                  boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <HtmlRenderer 
+                  key={key} 
+                  html={htmlContent} 
+                  css={cssStyles} 
+                />
+              </div>
             </div>
           </CardContent>
         </Card>

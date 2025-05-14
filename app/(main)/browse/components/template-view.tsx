@@ -115,9 +115,9 @@ export default function TemplateView({ template }: TemplateViewProps) {
               </div>
               
               <TabsContent value="preview" className="mt-4">
-                <div className="bg-card p-4 rounded-md border min-h-[600px]">
+                <div className="bg-card p-8 rounded-md border flex items-center justify-center" style={{ minHeight: '700px' }}>
                   {renderError && template.thumbnail ? (
-                    <div className="relative w-full h-[600px]">
+                    <div className="relative w-full" style={{ height: '700px' }}>
                       <Image
                         src={template.thumbnail}
                         alt={template.name}
@@ -130,14 +130,32 @@ export default function TemplateView({ template }: TemplateViewProps) {
                       </div>
                     </div>
                   ) : (
-                    <div className="w-full h-[600px] overflow-auto">
-                      <HtmlRenderer 
-                        key={previewKey}
-                        html={template.htmlContent} 
-                        css={getComputedCss()} 
-                        onError={handleRenderError}
-                        onRender={handleRenderSuccess}
-                      />
+                    <div className="w-full flex justify-center items-center py-5">
+                      <div 
+                        className="bg-white shadow-xl border border-gray-200 rounded-sm relative overflow-hidden page-with-fold"
+                        style={{
+                          width: '100%',
+                          maxWidth: '420px',
+                          height: 'auto',
+                          aspectRatio: '1/1.414',
+                          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+                          background: 'linear-gradient(to right, #f9f9f9 0%, #ffffff 50%, #f9f9f9 100%)'
+                        }}
+                      >
+                        {/* Page fold effect */}
+                        <div className="absolute top-0 right-0 w-0 h-0 z-10 border-t-[25px] border-r-[25px] border-t-gray-200 border-r-white" style={{ boxShadow: '-2px 2px 3px rgba(0,0,0,0.1)' }}></div>
+                        
+                        <div className="absolute top-0 left-0 w-full h-full">
+                          <HtmlRenderer 
+                            key={previewKey}
+                            html={template.htmlContent} 
+                            css={getComputedCss()} 
+                            onError={handleRenderError}
+                            onRender={handleRenderSuccess}
+                            className="h-full"
+                          />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

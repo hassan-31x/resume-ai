@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create admin user
-  const adminPassword = await hash("Admin123!", 12);
+  const adminPassword = await hash("muhammadhassan.gtsolutionsusa@gmail.com", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@example.com" },
+    where: { email: "muhammadhassan.gtsolutionsusa@gmail.com" },
     update: {},
     create: {
-      email: "admin@example.com",
+      email: "muhammadhassan.gtsolutionsusa@gmail.com",
       name: "Admin User",
       password: adminPassword,
       role: "ADMIN",
@@ -120,11 +120,11 @@ async function main() {
   </section>
 </div>`,
       cssStyles: `.resume {
-  max-width: 8.5in;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0.5in;
+  padding: 5%;
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-size: 1em;
   line-height: var(--line-height);
   color: #333;
   background-color: white;
@@ -132,18 +132,18 @@ async function main() {
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.5em;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 1.8em;
   color: var(--primary-color);
 }
 
 .contact-info {
-  margin-top: 5px;
-  font-size: 12px;
+  margin-top: 0.4em;
+  font-size: 0.85em;
 }
 
 .resume-section {
@@ -151,11 +151,11 @@ async function main() {
 }
 
 .resume-section h2 {
-  font-size: 18px;
+  font-size: 1.2em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--primary-color);
-  padding-bottom: 4px;
-  margin-bottom: 12px;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.8em;
   color: var(--primary-color);
 }
 
@@ -171,7 +171,7 @@ async function main() {
 
 .item-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -179,7 +179,7 @@ async function main() {
   display: flex;
   justify-content: space-between;
   font-style: italic;
-  margin: 4px 0;
+  margin: 0.3em 0;
 }
 
 .item-subheader p {
@@ -188,38 +188,38 @@ async function main() {
 
 .location {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 .date {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 ul {
-  margin: 8px 0;
-  padding-left: 20px;
+  margin: 0.6em 0;
+  padding-left: 1.5em;
 }
 
 li {
-  margin-bottom: 4px;
+  margin-bottom: 0.3em;
 }
 
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 1em;
 }
 
 .skill-category h3 {
-  font-size: 14px;
+  font-size: 0.95em;
   margin: 0;
   display: inline;
 }
 
 .skill-category p {
   display: inline;
-  margin-left: 5px;
+  margin-left: 0.3em;
 }`,
       category: TemplateCategory.PROFESSIONAL,
       tags: ["Modern", "Classic", "Software", "Engineering"],
@@ -355,11 +355,11 @@ li {
   </section>
 </div>`,
       cssStyles: `.resume {
-  max-width: 8.5in;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0.5in;
+  padding: 5%;
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-size: 1em;
   line-height: var(--line-height);
   color: #333;
   background-color: white;
@@ -367,19 +367,18 @@ li {
 
 .header {
   text-align: center;
-  margin-bottom: var(--section-spacing);
+  margin-bottom: 1.5em;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 1.8em;
   color: var(--primary-color);
 }
 
 .contact-info {
-  margin-top: 8px;
-  font-size: 12px;
-  line-height: 1.4;
+  margin-top: 0.4em;
+  font-size: 0.85em;
 }
 
 .resume-section {
@@ -387,13 +386,12 @@ li {
 }
 
 .resume-section h2 {
-  font-size: 16px;
+  font-size: 1.2em;
   text-transform: uppercase;
-  color: var(--primary-color);
   border-bottom: 1px solid var(--primary-color);
-  padding-bottom: 4px;
-  margin-bottom: 12px;
-  font-weight: bold;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.8em;
+  color: var(--primary-color);
 }
 
 .resume-item {
@@ -408,7 +406,7 @@ li {
 
 .item-header h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -416,7 +414,7 @@ li {
   display: flex;
   justify-content: space-between;
   font-style: italic;
-  margin: 2px 0 4px 0;
+  margin: 0.3em 0;
 }
 
 .item-subheader p {
@@ -425,35 +423,35 @@ li {
 
 .location {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 .date {
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 ul, ol {
-  margin: 6px 0;
-  padding-left: 20px;
+  margin: 0.6em 0;
+  padding-left: 1.5em;
 }
 
 li {
-  margin-bottom: 4px;
+  margin-bottom: 0.3em;
 }
 
 .publication-list {
-  padding-left: 22px;
+  padding-left: 1.7em;
 }
 
 .publication-list li {
-  margin-bottom: 6px;
+  margin-bottom: 0.4em;
 }
 
 .subsection-title {
-  font-size: 15px;
+  font-size: 1.1em;
   font-weight: 600;
-  margin: 10px 0 6px 0;
+  margin: 0.8em 0 0.4em 0;
   color: var(--secondary-color);
 }
 
