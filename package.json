@@ -8,13 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:seed": "npx ts-node prisma/seed.ts",
-    "check-latex": "node scripts/check-latex-deps.js",
-    "docker:start": "./run-docker.sh start",
-    "docker:dev": "./run-docker.sh start:dev",
-    "docker:stop": "./run-docker.sh stop",
-    "docker:logs": "./run-docker.sh logs",
-    "docker:check-latex": "./run-docker.sh check-latex"
+    "prisma:seed": "npx ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
@@ -51,7 +45,6 @@
     "@radix-ui/react-tooltip": "^1.2.6",
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcrypt": "^5.0.2",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
@@ -59,7 +52,6 @@
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
-    "html2pdf.js": "^0.10.3",
     "input-otp": "^1.4.2",
     "katex": "^0.16.22",
     "lucide-react": "^0.418.0",
@@ -75,7 +67,6 @@
     "react-latex-next": "^3.0.0",
     "react-markdown": "^10.1.0",
     "react-resizable-panels": "^3.0.1",
-    "react-syntax-highlighter": "^15.6.1",
     "recharts": "^2.15.3",
     "remark-gfm": "^4.0.1",
     "resend": "^3.5.0",
