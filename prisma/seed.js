@@ -19,517 +19,464 @@ async function main() {
 
   console.log("Admin user created:", admin.id);
 
-  // Simple LaTeX resume template examples
+  // Templates with HTML and CSS
   const templates = [
     {
       name: "Professional Classic",
       description: "A clean, professional resume template with a traditional layout",
-      latexCode: `\\documentclass[a4paper,11pt]{article}
-      
-\\usepackage{geometry}
-\\usepackage{hyperref}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
-\\usepackage{enumitem}
-\\usepackage{xcolor}
+      htmlContent: `<div class="resume">
+  <header class="header">
+    <h1>John Doe</h1>
+    <p class="contact-info">
+      123 Main Street, City, State 12345 | (123) 456-7890 | john.doe@email.com | linkedin.com/in/johndoe
+    </p>
+  </header>
+  
+  <section class="resume-section">
+    <h2>Education</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>University Name</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Bachelor of Science in Computer Science</p>
+        <span class="date">Expected Graduation: May 2024</span>
+      </div>
+      <p>GPA: 3.8/4.0</p>
+    </div>
+  </section>
 
-\\geometry{margin=1in}
-\\pagestyle{empty}
+  <section class="resume-section">
+    <h2>Experience</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Company Name</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Software Engineering Intern</p>
+        <span class="date">June 2023 - August 2023</span>
+      </div>
+      <ul>
+        <li>Developed and maintained features for the company's main web application using React and Node.js</li>
+        <li>Collaborated with cross-functional teams to implement new features and fix bugs</li>
+        <li>Improved application performance by 30% by optimizing database queries</li>
+      </ul>
+    </div>
 
-% Define colors
-\\definecolor{primary}{RGB}{70, 70, 70}
-\\definecolor{secondary}{RGB}{120, 120, 120}
-\\definecolor{accent}{RGB}{50, 50, 50}
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Another Company</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Technical Assistant</p>
+        <span class="date">January 2022 - May 2022</span>
+      </div>
+      <ul>
+        <li>Assisted in troubleshooting technical issues for clients</li>
+        <li>Created documentation for internal processes</li>
+        <li>Participated in weekly team meetings to discuss progress and roadblocks</li>
+      </ul>
+    </div>
+  </section>
 
-% Format section titles
-\\titleformat{\\section}{\\Large\\bfseries\\color{primary}}{}{0em}{\\titlerule\\vspace{0.5em}}
+  <section class="resume-section">
+    <h2>Projects</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Project Name</h3>
+        <span class="location">GitHub: github.com/johndoe/project</span>
+      </div>
+      <ul>
+        <li>Built a web application using React, Node.js, and MongoDB</li>
+        <li>Implemented user authentication and authorization</li>
+        <li>Deployed the application on AWS</li>
+      </ul>
+    </div>
+  </section>
 
-\\begin{document}
+  <section class="resume-section">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3>Programming Languages:</h3>
+        <p>Java, Python, JavaScript, HTML/CSS, SQL</p>
+      </div>
+      <div class="skill-category">
+        <h3>Frameworks & Libraries:</h3>
+        <p>React, Node.js, Express, Django</p>
+      </div>
+      <div class="skill-category">
+        <h3>Tools & Technologies:</h3>
+        <p>Git, Docker, AWS, MongoDB, PostgreSQL</p>
+      </div>
+      <div class="skill-category">
+        <h3>Soft Skills:</h3>
+        <p>Problem Solving, Communication, Teamwork, Leadership</p>
+      </div>
+    </div>
+  </section>
+</div>`,
+      cssStyles: `.resume {
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.5in;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: #333;
+  background-color: white;
+}
 
-\\begin{center}
-    {\\Huge\\textbf{JOHN DOE}}\\\\
-    123 Main Street, City, State 12345 \\\\
-    \\href{mailto:john.doe@email.com}{john.doe@email.com} $|$ (123) 456-7890 $|$ 
-    \\href{https://linkedin.com/in/johndoe}{linkedin.com/in/johndoe}
-\\end{center}
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-\\section{EDUCATION}
-\\textbf{University Name} \\hfill City, State\\\\
-Bachelor of Science in Computer Science \\hfill Expected Graduation: May 2024\\\\
-GPA: 3.8/4.0
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--primary-color);
+}
 
-\\section{EXPERIENCE}
-\\textbf{Company Name} \\hfill City, State\\\\
-\\textit{Software Engineering Intern} \\hfill June 2023 - August 2023
-\\begin{itemize}[leftmargin=*]
-    \\item Developed and maintained features for the company's main web application using React and Node.js
-    \\item Collaborated with cross-functional teams to implement new features and fix bugs
-    \\item Improved application performance by 30\\% by optimizing database queries
-\\end{itemize}
+.contact-info {
+  margin-top: 5px;
+  font-size: 12px;
+}
 
-\\textbf{Another Company} \\hfill City, State\\\\
-\\textit{Technical Assistant} \\hfill January 2022 - May 2022
-\\begin{itemize}[leftmargin=*]
-    \\item Assisted in troubleshooting technical issues for clients
-    \\item Created documentation for internal processes
-    \\item Participated in weekly team meetings to discuss progress and roadblocks
-\\end{itemize}
+.resume-section {
+  margin-bottom: var(--section-spacing);
+}
 
-\\section{PROJECTS}
-\\textbf{Project Name} \\hfill \\textit{GitHub: \\href{https://github.com/johndoe/project}{github.com/johndoe/project}}
-\\begin{itemize}[leftmargin=*]
-    \\item Built a web application using React, Node.js, and MongoDB
-    \\item Implemented user authentication and authorization
-    \\item Deployed the application on AWS
-\\end{itemize}
+.resume-section h2 {
+  font-size: 18px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--primary-color);
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
 
-\\section{SKILLS}
-\\textbf{Programming Languages:} Java, Python, JavaScript, HTML/CSS, SQL\\\\
-\\textbf{Frameworks \& Libraries:} React, Node.js, Express, Django\\\\
-\\textbf{Tools \& Technologies:} Git, Docker, AWS, MongoDB, PostgreSQL\\\\
-\\textbf{Soft Skills:} Problem Solving, Communication, Teamwork, Leadership
+.resume-item {
+  margin-bottom: var(--item-spacing);
+}
 
-\\end{document}`,
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.item-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.item-subheader {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+.item-subheader p {
+  margin: 0;
+}
+
+.location {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.date {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.skill-category h3 {
+  font-size: 14px;
+  margin: 0;
+  display: inline;
+}
+
+.skill-category p {
+  display: inline;
+  margin-left: 5px;
+}`,
       category: TemplateCategory.PROFESSIONAL,
       tags: ["Modern", "Classic", "Software", "Engineering"],
       isAdminCreated: true,
       userId: admin.id,
       thumbnail: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070&auto=format&fit=crop",
+      primaryColor: "#4A6CF7", 
+      secondaryColor: "#6E82A6",
+      fontFamily: "'Inter', sans-serif",
+      fontSize: 14,
+      lineHeight: 1.5,
+      sectionSpacing: 24,
+      itemSpacing: 12
     },
     {
       name: "Academic CV",
       description: "A comprehensive academic CV template for researchers and professors",
-      latexCode: `\\documentclass[11pt,a4paper]{article}
+      htmlContent: `<div class="resume">
+  <header class="header">
+    <h1>Dr. Jane Smith</h1>
+    <p class="contact-info">
+      Department of Computer Science, University Name<br>
+      123 University Ave, City, State 12345<br>
+      jane.smith@university.edu | (123) 456-7890 | university.edu/~jsmith
+    </p>
+  </header>
+  
+  <section class="resume-section">
+    <h2>Education</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>University Name</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Ph.D. in Computer Science</p>
+        <span class="date">2015 - 2020</span>
+      </div>
+      <p>Dissertation: "Title of Dissertation"<br>
+      Advisor: Professor Name</p>
+    </div>
+    
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Another University</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>M.S. in Computer Science</p>
+        <span class="date">2013 - 2015</span>
+      </div>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Academic Appointments</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>University Name</h3>
+        <span class="location">City, State</span>
+      </div>
+      <div class="item-subheader">
+        <p>Assistant Professor, Department of Computer Science</p>
+        <span class="date">2020 - Present</span>
+      </div>
+      <ul>
+        <li>Teaching undergraduate and graduate courses in artificial intelligence and machine learning</li>
+        <li>Supervising 3 Ph.D. students and 5 M.S. students</li>
+        <li>Leading research projects in natural language processing and computer vision</li>
+      </ul>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Research Interests</h2>
+    <p>Artificial Intelligence, Machine Learning, Natural Language Processing, Computer Vision</p>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Publications</h2>
+    <div class="resume-item">
+      <h3 class="subsection-title">Journal Articles</h3>
+      <ol class="publication-list">
+        <li>Smith, J., Johnson, A., et al. (2022). "Title of paper." <em>Journal Name</em>, 10(2), 123-145.</li>
+        <li>Smith, J., Williams, B., et al. (2021). "Another paper title." <em>Another Journal</em>, 5(3), 67-89.</li>
+      </ol>
+    </div>
+    
+    <div class="resume-item">
+      <h3 class="subsection-title">Conference Proceedings</h3>
+      <ol class="publication-list">
+        <li>Smith, J., Davis, C., et al. (2022). "Conference paper title." In <em>Proceedings of the Conference Name</em>, pp. 234-245.</li>
+        <li>Smith, J., Brown, D., et al. (2021). "Another conference paper." In <em>Proceedings of Another Conference</em>, pp. 345-356.</li>
+      </ol>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Grants and Funding</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Title of Grant</h3>
+        <span class="location">$500,000</span>
+      </div>
+      <div class="item-subheader">
+        <p>Funding Agency</p>
+        <span class="date">2021 - 2024</span>
+      </div>
+      <p>Role: Principal Investigator</p>
+    </div>
+  </section>
+  
+  <section class="resume-section">
+    <h2>Teaching Experience</h2>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Introduction to Artificial Intelligence</h3>
+        <span class="date">Fall 2020, Spring 2021, Fall 2021</span>
+      </div>
+    </div>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Advanced Machine Learning</h3>
+        <span class="date">Spring 2021, Spring 2022</span>
+      </div>
+    </div>
+    <div class="resume-item">
+      <div class="item-header">
+        <h3>Natural Language Processing</h3>
+        <span class="date">Fall 2020, Fall 2021</span>
+      </div>
+    </div>
+  </section>
+</div>`,
+      cssStyles: `.resume {
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.5in;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: #333;
+  background-color: white;
+}
 
-\\usepackage{geometry}
-\\usepackage{hyperref}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
-\\usepackage{enumitem}
-\\usepackage{xcolor}
+.header {
+  text-align: center;
+  margin-bottom: var(--section-spacing);
+}
 
-\\geometry{margin=1in}
-\\pagestyle{empty}
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--primary-color);
+}
 
-% Define colors
-\\definecolor{primary}{RGB}{0, 60, 113}
-\\definecolor{secondary}{RGB}{102, 102, 102}
+.contact-info {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
 
-% Format section titles
-\\titleformat{\\section}{\\Large\\bfseries\\color{primary}}{}{0em}{\\vspace{0.2em}}
-\\titleformat{\\subsection}{\\large\\bfseries\\color{secondary}}{}{0em}{\\vspace{0.1em}}
+.resume-section {
+  margin-bottom: var(--section-spacing);
+}
 
-\\begin{document}
+.resume-section h2 {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
 
-\\begin{center}
-    {\\LARGE\\textbf{DR. JANE SMITH}}\\\\
-    \\vspace{0.5em}
-    Department of Computer Science, University Name\\\\
-    123 University Ave, City, State 12345\\\\
-    \\vspace{0.3em}
-    \\href{mailto:jane.smith@university.edu}{jane.smith@university.edu} $|$ (123) 456-7890 $|$ 
-    \\href{https://university.edu/~jsmith}{university.edu/~jsmith}
-\\end{center}
+.resume-item {
+  margin-bottom: var(--item-spacing);
+}
 
-\\section{EDUCATION}
-\\textbf{University Name} \\hfill City, State\\\\
-Ph.D. in Computer Science \\hfill 2015 - 2020\\\\
-Dissertation: "Title of Dissertation"\\\\
-Advisor: Professor Name
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
-\\textbf{Another University} \\hfill City, State\\\\
-M.S. in Computer Science \\hfill 2013 - 2015
+.item-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: bold;
+}
 
-\\section{ACADEMIC APPOINTMENTS}
-\\textbf{University Name} \\hfill City, State\\\\
-Assistant Professor, Department of Computer Science \\hfill 2020 - Present
-\\begin{itemize}[leftmargin=*]
-    \\item Teaching undergraduate and graduate courses in artificial intelligence and machine learning
-    \\item Supervising 3 Ph.D. students and 5 M.S. students
-    \\item Leading research projects in natural language processing and computer vision
-\\end{itemize}
+.item-subheader {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  margin: 2px 0 4px 0;
+}
 
-\\section{RESEARCH INTERESTS}
-Artificial Intelligence, Machine Learning, Natural Language Processing, Computer Vision
+.item-subheader p {
+  margin: 0;
+}
 
-\\section{PUBLICATIONS}
-\\subsection{Journal Articles}
-\\begin{enumerate}[leftmargin=*]
-    \\item Smith, J., Johnson, A., et al. (2022). "Title of paper." \\textit{Journal Name}, 10(2), 123-145.
-    \\item Smith, J., Williams, B., et al. (2021). "Another paper title." \\textit{Another Journal}, 5(3), 67-89.
-\\end{enumerate}
+.location {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
 
-\\subsection{Conference Proceedings}
-\\begin{enumerate}[leftmargin=*]
-    \\item Smith, J., Davis, C., et al. (2022). "Conference paper title." In \\textit{Proceedings of the Conference Name}, pp. 234-245.
-    \\item Smith, J., Brown, D., et al. (2021). "Another conference paper." In \\textit{Proceedings of Another Conference}, pp. 345-356.
-\\end{enumerate}
+.date {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
 
-\\section{GRANTS AND FUNDING}
-\\textbf{Title of Grant} \\hfill \\$500,000\\\\
-Funding Agency \\hfill 2021 - 2024\\\\
-Role: Principal Investigator
+ul, ol {
+  margin: 6px 0;
+  padding-left: 20px;
+}
 
-\\section{TEACHING EXPERIENCE}
-\\textbf{Introduction to Artificial Intelligence} \\hfill Fall 2020, Spring 2021, Fall 2021\\\\
-\\textbf{Advanced Machine Learning} \\hfill Spring 2021, Spring 2022\\\\
-\\textbf{Natural Language Processing} \\hfill Fall 2020, Fall 2021
+li {
+  margin-bottom: 4px;
+}
 
-\\section{PROFESSIONAL SERVICE}
-\\textbf{Reviewer} for Journal Name, Another Journal\\\\
-\\textbf{Program Committee Member} for Conference Name, Another Conference\\\\
-\\textbf{Workshop Organizer} for Workshop Name, 2022
+.publication-list {
+  padding-left: 22px;
+}
 
-\\end{document}`,
+.publication-list li {
+  margin-bottom: 6px;
+}
+
+.subsection-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 10px 0 6px 0;
+  color: var(--secondary-color);
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}`,
       category: TemplateCategory.ACADEMIC,
       tags: ["Academic", "Research", "Professor", "PhD"],
       isAdminCreated: true,
       userId: admin.id,
       thumbnail: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Creative Design Resume",
-      description: "A modern, creative resume template for designers and artists",
-      latexCode: `\\documentclass[a4paper,10pt]{article}
-
-\\usepackage{geometry}
-\\usepackage{xcolor}
-\\usepackage{tikz}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
-\\usepackage{enumitem}
-\\usepackage{hyperref}
-
-\\geometry{margin=0.8in}
-\\pagestyle{empty}
-
-% Define colors
-\\definecolor{primary}{RGB}{26, 188, 156}
-\\definecolor{secondary}{RGB}{44, 62, 80}
-\\definecolor{accent}{RGB}{52, 152, 219}
-
-% Format section titles
-\\titleformat{\\section}{\\normalfont\\Large\\bfseries\\color{primary}}{}{0em}{\\vspace{0.2em}}
-
-\\begin{document}
-
-% Header with name and title
-\\begin{tikzpicture}[remember picture, overlay]
-  \\fill[color=primary] (current page.north west) rectangle ++({\\paperwidth},1.5cm);
-  \\node[anchor=west, text=white, font=\\Huge\\bfseries, xshift=1cm, yshift=-0.75cm] at (current page.north west) {ALEX RIVERA};
-  \\node[anchor=east, text=white, font=\\large, xshift=-1cm, yshift=-0.75cm] at (current page.north east) {GRAPHIC DESIGNER};
-\\end{tikzpicture}
-
-\\vspace*{1.7cm}
-
-% Contact information
-\\begin{minipage}{0.5\\textwidth}
-  \\faEnvelope\\ \\href{mailto:alex.rivera@email.com}{alex.rivera@email.com}\\\\
-  \\faPhone\\ (123) 456-7890
-\\end{minipage}
-\\begin{minipage}{0.5\\textwidth}
-  \\faLinkedin\\ \\href{https://linkedin.com/in/alexrivera}{linkedin.com/in/alexrivera}\\\\
-  \\faGlobe\\ \\href{https://alexrivera.com}{alexrivera.com}
-\\end{minipage}
-
-\\vspace{0.5cm}
-
-% Profile section
-\\section{PROFILE}
-Creative and detail-oriented graphic designer with 5+ years of experience creating visually stunning designs for print and digital media. Proficient in Adobe Creative Suite with a strong portfolio of branding, packaging, and UI/UX design projects.
-
-% Skills section
-\\section{SKILLS}
-\\begin{minipage}{0.33\\textwidth}
-  \\textbf{Design}
-  \\begin{itemize}[leftmargin=*]
-    \\item Branding
-    \\item Typography
-    \\item Illustration
-    \\item Layout Design
-  \\end{itemize}
-\\end{minipage}
-\\begin{minipage}{0.33\\textwidth}
-  \\textbf{Software}
-  \\begin{itemize}[leftmargin=*]
-    \\item Adobe Photoshop
-    \\item Adobe Illustrator
-    \\item Adobe InDesign
-    \\item Figma
-  \\end{itemize}
-\\end{minipage}
-\\begin{minipage}{0.33\\textwidth}
-  \\textbf{Other}
-  \\begin{itemize}[leftmargin=*]
-    \\item HTML/CSS
-    \\item UI/UX Design
-    \\item Project Management
-    \\item Client Communication
-  \\end{itemize}
-\\end{minipage}
-
-\\vspace{0.5cm}
-
-% Experience section
-\\section{EXPERIENCE}
-\\textbf{Creative Agency Name} \\hfill City, State\\\\
-\\textit{Senior Graphic Designer} \\hfill Jan 2020 - Present
-\\begin{itemize}[leftmargin=*]
-  \\item Led branding projects for 10+ clients, including logo design, style guides, and marketing materials
-  \\item Collaborated with the web development team to create cohesive UI designs for client websites
-  \\item Mentored junior designers and provided feedback during weekly design reviews
-  \\item Increased client satisfaction ratings by 25\\% through improved design processes
-\\end{itemize}
-
-\\textbf{Design Studio Name} \\hfill City, State\\\\
-\\textit{Graphic Designer} \\hfill Jun 2017 - Dec 2019
-\\begin{itemize}[leftmargin=*]
-  \\item Created packaging designs for consumer products in the food and beverage industry
-  \\item Developed social media graphics and campaigns for various clients
-  \\item Assisted with photo shoots and edited product photography
-\\end{itemize}
-
-% Education section
-\\section{EDUCATION}
-\\textbf{University Name} \\hfill City, State\\\\
-Bachelor of Fine Arts in Graphic Design \\hfill Graduated: May 2017\\\\
-GPA: 3.75/4.0
-
-% Portfolio highlights
-\\section{PORTFOLIO HIGHLIGHTS}
-\\begin{itemize}[leftmargin=*]
-  \\item \\textbf{Brand Redesign:} Complete rebranding for a local coffee shop, resulting in 35\\% increased foot traffic
-  \\item \\textbf{Packaging Design:} Award-winning packaging design for an organic skincare line
-  \\item \\textbf{Website Design:} UI/UX design for an e-commerce platform with improved conversion rates
-  \\item \\textbf{App Interface:} Mobile app interface design for a fitness tracking application
-\\end{itemize}
-
-% Footer
-\\begin{tikzpicture}[remember picture, overlay]
-  \\fill[color=primary] (current page.south west) rectangle ++({\\paperwidth},0.5cm);
-\\end{tikzpicture}
-
-\\end{document}`,
-      category: TemplateCategory.CREATIVE,
-      tags: ["Creative", "Design", "Graphic Design", "Modern"],
-      isAdminCreated: true,
-      userId: admin.id,
-      thumbnail: "https://images.unsplash.com/photo-1611702700098-dec597b27d9d?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Technical Resume",
-      description: "A technical resume template for software developers and engineers",
-      latexCode: `\\documentclass[11pt,a4paper]{article}
-
-\\usepackage{geometry}
-\\usepackage{hyperref}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
-\\usepackage{enumitem}
-\\usepackage{xcolor}
-
-\\geometry{margin=0.75in}
-\\pagestyle{empty}
-
-% Define colors
-\\definecolor{primary}{RGB}{61, 90, 128}
-\\definecolor{secondary}{RGB}{152, 193, 217}
-\\definecolor{background}{RGB}{238, 244, 249}
-
-% Format section titles
-\\titleformat{\\section}{\\Large\\bfseries\\color{primary}}{}{0em}{\\titlerule[1pt]\\vspace{0.5em}}
-
-\\begin{document}
-\\pagecolor{background}
-
-\\begin{center}
-    {\\Huge\\textbf{\\textcolor{primary}{TAYLOR PARKER}}}\\\\
-    \\vspace{0.5em}
-    \\texttt{\\href{mailto:taylor.parker@email.com}{taylor.parker@email.com}} $|$ 
-    (123) 456-7890 $|$ 
-    \\texttt{\\href{https://github.com/tparker}{github.com/tparker}} $|$
-    \\texttt{\\href{https://linkedin.com/in/taylorparker}{linkedin.com/in/taylorparker}}
-\\end{center}
-
-\\section{TECHNICAL SKILLS}
-\\begin{itemize}[leftmargin=*, itemsep=0pt]
-    \\item \\textbf{Languages:} Python, JavaScript, Java, C++, SQL, HTML/CSS, TypeScript, Bash
-    \\item \\textbf{Frameworks:} React, Node.js, Django, Express, Spring Boot, TensorFlow
-    \\item \\textbf{Tools:} Git, Docker, Kubernetes, AWS, GCP, CI/CD, Jenkins, Webpack
-    \\item \\textbf{Databases:} PostgreSQL, MongoDB, Redis, MySQL, ElasticSearch
-    \\item \\textbf{Methodologies:} Agile/Scrum, Test-Driven Development, Microservices Architecture
-\\end{itemize}
-
-\\section{WORK EXPERIENCE}
-\\textbf{Tech Company Name} \\hfill City, State\\\\
-\\textit{Senior Software Engineer} \\hfill Jan 2021 - Present
-\\begin{itemize}[leftmargin=*, itemsep=1pt]
-    \\item Designed and implemented a microservices architecture that improved system reliability by 99.9\\%
-    \\item Led a team of 5 engineers in developing a new feature used by 50,000+ daily active users
-    \\item Optimized database queries that reduced API response time by 40\\%
-    \\item Implemented CI/CD pipeline with automated testing that reduced deployment time by 70\\%
-    \\item Conducted code reviews and mentored junior developers on best practices
-\\end{itemize}
-
-\\textbf{Another Tech Company} \\hfill City, State\\\\
-\\textit{Software Engineer} \\hfill Jun 2018 - Dec 2020
-\\begin{itemize}[leftmargin=*, itemsep=1pt]
-    \\item Developed RESTful APIs using Node.js and Express for customer-facing applications
-    \\item Created responsive front-end components with React and TypeScript
-    \\item Collaborated with UX designers to implement user interface improvements
-    \\item Participated in agile development cycles, including daily standups and sprint planning
-    \\item Built and maintained automated test suites with Jest and Cypress
-\\end{itemize}
-
-\\textbf{Startup Name} \\hfill City, State\\\\
-\\textit{Junior Developer} \\hfill Aug 2016 - May 2018
-\\begin{itemize}[leftmargin=*, itemsep=1pt]
-    \\item Assisted in building a web application using Django and PostgreSQL
-    \\item Implemented user authentication and authorization features
-    \\item Fixed bugs and addressed technical debt in legacy codebase
-\\end{itemize}
-
-\\section{PROJECTS}
-\\textbf{Open Source Contribution} \\hfill \\texttt{\\href{https://github.com/project/repo}{github.com/project/repo}}
-\\begin{itemize}[leftmargin=*, itemsep=1pt]
-    \\item Contributed to a popular open-source library with 5,000+ stars on GitHub
-    \\item Implemented new features and fixed critical bugs
-    \\item Collaborated with maintainers to improve documentation
-\\end{itemize}
-
-\\textbf{Personal Project} \\hfill \\texttt{\\href{https://myproject.com}{myproject.com}}
-\\begin{itemize}[leftmargin=*, itemsep=1pt]
-    \\item Built a full-stack web application using React, Node.js, and MongoDB
-    \\item Implemented OAuth authentication and role-based access control
-    \\item Deployed to AWS using containerization with Docker and Kubernetes
-\\end{itemize}
-
-\\section{EDUCATION}
-\\textbf{University Name} \\hfill City, State\\\\
-Bachelor of Science in Computer Science \\hfill Graduated: May 2016\\\\
-GPA: 3.7/4.0 $|$ Dean's List: 6 semesters $|$ Relevant Coursework: Data Structures, Algorithms, Database Systems
-
-\\section{CERTIFICATIONS}
-\\textbf{AWS Certified Solutions Architect} \\hfill Issued: Jan 2022\\\\
-\\textbf{Google Cloud Professional Data Engineer} \\hfill Issued: Mar 2021\\\\
-\\textbf{MongoDB Certified Developer} \\hfill Issued: Nov 2020
-
-\\end{document}`,
-      category: TemplateCategory.TECHNICAL,
-      tags: ["Technical", "Software", "Engineering", "Developer"],
-      isAdminCreated: true,
-      userId: admin.id,
-      thumbnail: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      name: "Entry Level Resume",
-      description: "A clean and professional resume template for students and recent graduates",
-      latexCode: `\\documentclass[letterpaper,11pt]{article}
-
-\\usepackage{geometry}
-\\usepackage{hyperref}
-\\usepackage{fontawesome}
-\\usepackage{titlesec}
-\\usepackage{enumitem}
-\\usepackage{xcolor}
-
-\\geometry{margin=0.75in}
-\\pagestyle{empty}
-
-% Define colors
-\\definecolor{primary}{RGB}{70, 130, 180}
-\\definecolor{secondary}{RGB}{128, 128, 128}
-
-% Format section titles
-\\titleformat{\\section}{\\normalfont\\Large\\bfseries\\color{primary}}{}{0em}{\\vspace{0.2em}}
-
-\\begin{document}
-
-\\begin{center}
-    {\\LARGE\\textbf{JAMIE WILSON}}\\\\
-    \\vspace{0.3em}
-    123 College Ave, City, State 12345 $|$ (123) 456-7890\\\\
-    \\href{mailto:jamie.wilson@email.com}{jamie.wilson@email.com} $|$ 
-    \\href{https://linkedin.com/in/jamiewilson}{linkedin.com/in/jamiewilson}
-\\end{center}
-
-\\section{EDUCATION}
-\\textbf{University Name} \\hfill City, State\\\\
-Bachelor of Business Administration, Marketing \\hfill Expected Graduation: May 2023\\\\
-GPA: 3.6/4.0 $|$ Dean's List: Fall 2021, Spring 2022
-
-\\textbf{Relevant Coursework:}
-Marketing Research, Consumer Behavior, Digital Marketing, Business Communication, Social Media Marketing
-
-\\section{EXPERIENCE}
-\\textbf{Marketing Agency Name} \\hfill City, State\\\\
-\\textit{Marketing Intern} \\hfill May 2022 - August 2022
-\\begin{itemize}[leftmargin=*]
-    \\item Assisted in developing social media content for 5 clients across different industries
-    \\item Conducted competitor analysis and presented findings to the marketing team
-    \\item Created weekly analytics reports tracking campaign performance
-    \\item Collaborated with graphic designers to create visually appealing marketing materials
-\\end{itemize}
-
-\\textbf{University Marketing Department} \\hfill City, State\\\\
-\\textit{Student Assistant} \\hfill September 2021 - Present
-\\begin{itemize}[leftmargin=*]
-    \\item Help manage social media accounts for university events and announcements
-    \\item Write content for the university blog and newsletter
-    \\item Support the marketing team during campus events and promotional activities
-    \\item Update the department website with new content and announcements
-\\end{itemize}
-
-\\textbf{Retail Store Name} \\hfill City, State\\\\
-\\textit{Sales Associate} \\hfill June 2020 - August 2021
-\\begin{itemize}[leftmargin=*]
-    \\item Provided customer service to 50+ customers daily
-    \\item Managed inventory and restocked merchandise
-    \\item Processed sales transactions and handled cash and credit card payments
-    \\item Consistently met or exceeded monthly sales targets
-\\end{itemize}
-
-\\section{SKILLS}
-\\begin{itemize}[leftmargin=*]
-    \\item \\textbf{Technical:} Microsoft Office Suite (Word, Excel, PowerPoint), Google Analytics, Canva, Hootsuite, Basic HTML/CSS
-    \\item \\textbf{Marketing:} Social Media Marketing, Content Creation, Email Marketing, SEO Basics, Marketing Analytics
-    \\item \\textbf{Soft Skills:} Communication, Teamwork, Time Management, Attention to Detail, Problem Solving
-    \\item \\textbf{Languages:} English (Native), Spanish (Intermediate)
-\\end{itemize}
-
-\\section{PROJECTS}
-\\textbf{Marketing Campaign Project} \\hfill Fall 2022
-\\begin{itemize}[leftmargin=*]
-    \\item Developed a comprehensive marketing campaign for a local business as part of a class project
-    \\item Created social media strategy, content calendar, and email marketing templates
-    \\item Presented campaign proposal to business owner and received excellent feedback
-    \\item Project received an A grade and was featured as an example for future classes
-\\end{itemize}
-
-\\section{ACTIVITIES \& LEADERSHIP}
-\\textbf{Marketing Club} \\hfill University Name\\\\
-\\textit{Vice President} \\hfill September 2022 - Present
-\\begin{itemize}[leftmargin=*]
-    \\item Organize weekly meetings and workshops for 30+ club members
-    \\item Coordinate guest speakers from local businesses and marketing agencies
-    \\item Manage club social media accounts and email communications
-\\end{itemize}
-
-\\textbf{Volunteer Experience} \\hfill Local Community Center\\\\
-\\textit{Social Media Volunteer} \\hfill January 2022 - Present
-\\begin{itemize}[leftmargin=*]
-    \\item Create and schedule posts for the community center's social media platforms
-    \\item Design flyers and digital graphics for community events
-    \\item Help increase social media engagement by 35\\% through strategic content planning
-\\end{itemize}
-
-\\end{document}`,
-      category: TemplateCategory.ENTRY_LEVEL,
-      tags: ["Entry Level", "Student", "Graduate", "Marketing"],
-      isAdminCreated: true,
-      userId: admin.id,
-      thumbnail: "https://images.unsplash.com/photo-1563212034-a3c59913afbe?q=80&w=2127&auto=format&fit=crop",
-    },
+      primaryColor: "#00407e",
+      secondaryColor: "#666666",
+      fontFamily: "'Georgia', serif",
+      fontSize: 14,
+      lineHeight: 1.5,
+      sectionSpacing: 22,
+      itemSpacing: 12
+    }
   ];
 
   // Insert templates
@@ -541,7 +488,6 @@ Marketing Research, Consumer Behavior, Digital Marketing, Business Communication
 
   console.log(`Created ${templates.length} templates`);
 }
-
 main()
   .catch((e) => {
     console.error(e);

@@ -102,13 +102,23 @@ model Template {
   id          String           @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  latexCode   String
+  htmlContent String           // HTML content of the template
+  cssStyles   String           // CSS styles for the template
   thumbnail   String?          // URL to template thumbnail image
   category    TemplateCategory @default(PROFESSIONAL)
   tags        String[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   isPublic    Boolean          @default(true)
+  
+  // Template styling options
+  primaryColor    String       @default("#4A6CF7")  // Primary color for accents
+  secondaryColor  String       @default("#6E82A6")  // Secondary color for less important elements
+  fontFamily      String       @default("'Inter', sans-serif") // Main font family
+  fontSize        Int          @default(14)         // Base font size in px
+  lineHeight      Float        @default(1.5)        // Base line height
+  sectionSpacing  Int          @default(24)         // Space between sections in px
+  itemSpacing     Int          @default(12)         // Space between items in px
   
   // Relation to the user who created the template
   createdBy   User             @relation("CreatedTemplates", fields: [userId], references: [id])
