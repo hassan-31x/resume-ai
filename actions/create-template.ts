@@ -33,7 +33,7 @@ const TemplateSchema = z.object({
   primaryColor: z.string().default("#4A6CF7"),
   secondaryColor: z.string().default("#6E82A6"),
   fontFamily: z.string().default("'Inter', sans-serif"),
-  fontSize: z.number().int().positive().default(14),
+  fontSize: z.number().int().positive().default(8),
   lineHeight: z.number().positive().default(1.5),
   sectionSpacing: z.number().int().positive().default(24),
   itemSpacing: z.number().int().positive().default(12)

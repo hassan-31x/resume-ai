@@ -25,6 +25,13 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
           if (onRender) onRender();
         };
         
+        // Extract font size from CSS if available
+        let fontSize = "12px"; // Default fallback
+        const fontSizeMatch = css.match(/font-size:\s*(\d+)px/);
+        if (fontSizeMatch && fontSizeMatch[1]) {
+          fontSize = `${fontSizeMatch[1]}px`;
+        }
+        
         // Set iframe content
         const document = iframeRef.current.contentDocument;
         if (document) {
@@ -42,7 +49,7 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                   font-family: Arial, sans-serif;
                   width: 100%;
                   height: auto;
-                  font-size: 55%;
+                  font-size: ${fontSize}; /* Using template's font size */
                   aspect-ratio: 1/1.414;
                   box-sizing: border-box;
                   transform-origin: top left;
@@ -51,12 +58,11 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                   line-height: 1.5;
                   -webkit-print-color-adjust: exact;
                   print-color-adjust: exact;
-                  // font-size: 12px; /* Base font size */
                 }
                 
                 /* Set root font size to scale with body width */
                 html {
-                  font-size: calc(0.5em + 0.8vw); /* Dynamic base size */
+                  font-size: calc(${fontSize} * 0.9); /* Base size from template */
                 }
                 
                 .resume-container {
@@ -92,11 +98,11 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                     margin: 0;
                     padding: 0;
                     transform: none !important;
-                    font-size: 11pt; /* Standard print size */
+                    font-size: ${fontSize}; /* Maintain template font size in print */
                   }
                   
                   html {
-                    font-size: 11pt; /* Lock font size for print */
+                    font-size: ${fontSize}; /* Lock font size for print */
                   }
                   
                   .resume-container {
@@ -132,13 +138,13 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                   document.body.style.transform = 'scale(' + scale + ')';
                   document.body.style.transformOrigin = 'top left';
                   
-                  // Adjust font size based on scale
+                  // Adjust font size based on scale if needed
                   if (scale < 0.7) {
-                    // For smaller containers, reduce base font size
-                    document.documentElement.style.fontSize = 'calc(0.45em + 0.6vw)';
+                    // For smaller containers, reduce base font size slightly
+                    document.documentElement.style.fontSize = (parseFloat('${fontSize}') * 0.9) + 'px';
                   } else if (scale > 1.2) {
                     // Prevent fonts from getting too large on big screens
-                    document.documentElement.style.fontSize = 'calc(0.45em + 0.4vw)';
+                    document.documentElement.style.fontSize = (parseFloat('${fontSize}') * 0.95) + 'px';
                   }
                   
                   // Center the content

@@ -280,7 +280,7 @@ li {
     primaryColor: "#4A6CF7",
     secondaryColor: "#6E82A6",
     fontFamily: "'Inter', sans-serif",
-    fontSize: 14,
+    fontSize: 8,
     lineHeight: 1.5,
     sectionSpacing: 24,
     itemSpacing: 12
@@ -483,260 +483,331 @@ li {
         </TabsContent>
         
         <TabsContent value="metadata" className="m-0">
-          <Card className="p-6">
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Template Name</Label>
-                <Input 
-                  id="name" 
-                  placeholder="e.g., Professional Resume Template" 
-                  value={templateData.name}
-                  onChange={(e) => setTemplateData(prev => ({ ...prev, name: e.target.value }))}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea 
-                  id="description" 
-                  placeholder="Describe your template..." 
-                  className="min-h-[100px]"
-                  value={templateData.description}
-                  onChange={(e) => setTemplateData(prev => ({ ...prev, description: e.target.value }))}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <Select 
-                  value={templateData.category} 
-                  onValueChange={(value: "PROFESSIONAL" | "ACADEMIC" | "CREATIVE" | "TECHNICAL" | "ENTRY_LEVEL" | "EXECUTIVE" | "OTHER") => {
-                    setTemplateData(prev => ({ ...prev, category: value }));
-                  }}
-                >
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="PROFESSIONAL">Professional</SelectItem>
-                    <SelectItem value="ACADEMIC">Academic</SelectItem>
-                    <SelectItem value="CREATIVE">Creative</SelectItem>
-                    <SelectItem value="TECHNICAL">Technical</SelectItem>
-                    <SelectItem value="ENTRY_LEVEL">Entry Level</SelectItem>
-                    <SelectItem value="EXECUTIVE">Executive</SelectItem>
-                    <SelectItem value="OTHER">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="tags">Tags</Label>
-                <div className="flex">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Metadata Form */}
+            <Card className="p-6 h-[calc(100vh-12rem)] overflow-auto">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Template Name</Label>
                   <Input 
-                    id="tags" 
-                    placeholder="Add tags..." 
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddTag();
-                      }
-                    }}
-                    className="flex-grow"
+                    id="name" 
+                    placeholder="e.g., Professional Resume Template" 
+                    value={templateData.name}
+                    onChange={(e) => setTemplateData(prev => ({ ...prev, name: e.target.value }))}
                   />
-                  <Button type="button" className="ml-2" onClick={handleAddTag}>Add</Button>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {templateData.tags.map(tag => (
-                    <Badge key={tag} variant="secondary" className="px-2 py-1">
-                      {tag}
-                      <button
-                        className="ml-1 text-xs text-muted-foreground hover:text-foreground"
-                        onClick={() => handleRemoveTag(tag)}
-                      >
-                        ×
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="flex justify-end mt-6">
-                <Button
-                  onClick={() => setActiveTab("styling")}
-                  className="min-w-[120px]"
-                >
-                  Next: Styling
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="styling" className="m-0">
-          <Card className="p-6">
-            <div className="max-w-2xl mx-auto space-y-6">
-              <h2 className="text-xl font-semibold mb-4">Template Styling</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="primaryColor">Primary Color</Label>
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      id="primaryColor" 
-                      type="color" 
-                      value={templateData.primaryColor}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
-                      className="w-16 h-10 p-1"
-                    />
-                    <Input 
-                      value={templateData.primaryColor}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
-                      className="flex-grow"
-                    />
-                  </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="secondaryColor">Secondary Color</Label>
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      id="secondaryColor" 
-                      type="color" 
-                      value={templateData.secondaryColor}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
-                      className="w-16 h-10 p-1"
-                    />
-                    <Input 
-                      value={templateData.secondaryColor}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
-                      className="flex-grow"
-                    />
-                  </div>
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea 
+                    id="description" 
+                    placeholder="Describe your template..." 
+                    className="min-h-[100px]"
+                    value={templateData.description}
+                    onChange={(e) => setTemplateData(prev => ({ ...prev, description: e.target.value }))}
+                  />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="fontFamily">Font Family</Label>
+                  <Label htmlFor="category">Category</Label>
                   <Select 
-                    value={templateData.fontFamily} 
-                    onValueChange={(value) => setTemplateData(prev => ({ ...prev, fontFamily: value }))}
+                    value={templateData.category} 
+                    onValueChange={(value: "PROFESSIONAL" | "ACADEMIC" | "CREATIVE" | "TECHNICAL" | "ENTRY_LEVEL" | "EXECUTIVE" | "OTHER") => {
+                      setTemplateData(prev => ({ ...prev, category: value }));
+                    }}
                   >
-                    <SelectTrigger id="fontFamily">
-                      <SelectValue placeholder="Select a font" />
+                    <SelectTrigger id="category">
+                      <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="'Inter', sans-serif">Inter</SelectItem>
-                      <SelectItem value="'Arial', sans-serif">Arial</SelectItem>
-                      <SelectItem value="'Helvetica', sans-serif">Helvetica</SelectItem>
-                      <SelectItem value="'Georgia', serif">Georgia</SelectItem>
-                      <SelectItem value="'Roboto', sans-serif">Roboto</SelectItem>
-                      <SelectItem value="'Lato', sans-serif">Lato</SelectItem>
-                      <SelectItem value="'Open Sans', sans-serif">Open Sans</SelectItem>
+                      <SelectItem value="PROFESSIONAL">Professional</SelectItem>
+                      <SelectItem value="ACADEMIC">Academic</SelectItem>
+                      <SelectItem value="CREATIVE">Creative</SelectItem>
+                      <SelectItem value="TECHNICAL">Technical</SelectItem>
+                      <SelectItem value="ENTRY_LEVEL">Entry Level</SelectItem>
+                      <SelectItem value="EXECUTIVE">Executive</SelectItem>
+                      <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="fontSize">Font Size (px)</Label>
-                  <div className="flex items-center gap-2">
+                  <Label htmlFor="tags">Tags</Label>
+                  <div className="flex">
                     <Input 
-                      id="fontSize" 
-                      type="number" 
-                      min="10" 
-                      max="20" 
-                      value={templateData.fontSize}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, fontSize: parseInt(e.target.value) || 14 }))}
+                      id="tags" 
+                      placeholder="Add tags..." 
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddTag();
+                        }
+                      }}
                       className="flex-grow"
                     />
+                    <Button type="button" className="ml-2" onClick={handleAddTag}>Add</Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {templateData.tags.map(tag => (
+                      <Badge key={tag} variant="secondary" className="px-2 py-1">
+                        {tag}
+                        <button
+                          className="ml-1 text-xs text-muted-foreground hover:text-foreground"
+                          onClick={() => handleRemoveTag(tag)}
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="lineHeight">Line Height</Label>
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      id="lineHeight" 
-                      type="number" 
-                      min="1" 
-                      max="2" 
-                      step="0.1" 
-                      value={templateData.lineHeight}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, lineHeight: parseFloat(e.target.value) || 1.5 }))}
-                      className="flex-grow"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="sectionSpacing">Section Spacing (px)</Label>
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      id="sectionSpacing" 
-                      type="number" 
-                      min="10" 
-                      max="50"
-                      value={templateData.sectionSpacing}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, sectionSpacing: parseInt(e.target.value) || 24 }))}
-                      className="flex-grow"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="itemSpacing">Item Spacing (px)</Label>
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      id="itemSpacing" 
-                      type="number" 
-                      min="5" 
-                      max="30"
-                      value={templateData.itemSpacing}
-                      onChange={(e) => setTemplateData(prev => ({ ...prev, itemSpacing: parseInt(e.target.value) || 12 }))}
-                      className="flex-grow"
-                    />
-                  </div>
+                <div className="flex justify-end mt-6">
+                  <Button
+                    onClick={() => setActiveTab("styling")}
+                    className="min-w-[120px]"
+                  >
+                    Next: Styling
+                  </Button>
                 </div>
               </div>
-              
-              <div className="pt-4">
-                <Card className="overflow-hidden">
-                  <div className="flex justify-center items-center p-4 bg-white">
-                    <div 
-                      className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
-                      style={{
-                        width: '100%',
-                        maxWidth: '420px',
-                        height: 'auto',
-                        aspectRatio: '1/1.414',
-                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
-                      }}
-                    >
-                      <HtmlRenderer 
-                        html={templateData.htmlContent} 
-                        css={getComputedCss()}
+            </Card>
+
+            {/* Preview */}
+            <Card className="p-4 h-[calc(100vh-12rem)] flex flex-col">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-lg font-medium">Preview</h2>
+                <Button variant="ghost" size="sm" onClick={() => setIsPreviewLoading(true)}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Refresh Preview
+                </Button>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex-grow min-h-0 overflow-auto bg-white rounded border flex justify-center items-center p-4">
+                <div 
+                  className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
+                  style={{
+                    width: '100%',
+                    maxWidth: '420px',
+                    height: 'auto',
+                    aspectRatio: '1/1.414',
+                    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <HtmlRenderer 
+                    key={isPreviewLoading ? Date.now() : undefined}
+                    html={templateData.htmlContent} 
+                    css={getComputedCss()}
+                    onRender={() => setIsPreviewLoading(false)}
+                  />
+                </div>
+              </div>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="styling" className="m-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Styling Form */}
+            <Card className="p-6 h-[calc(100vh-12rem)] overflow-auto">
+              <div className="space-y-6">
+                <h2 className="text-xl font-semibold mb-4">Template Styling</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="primaryColor">Primary Color</Label>
+                    <div className="flex items-center gap-2">
+                      <Input 
+                        id="primaryColor" 
+                        type="color" 
+                        value={templateData.primaryColor}
+                        onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
+                        className="w-16 h-10 p-1"
+                      />
+                      <Input 
+                        value={templateData.primaryColor}
+                        onChange={(e) => setTemplateData(prev => ({ ...prev, primaryColor: e.target.value }))}
+                        className="flex-grow"
                       />
                     </div>
                   </div>
-                </Card>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="secondaryColor">Secondary Color</Label>
+                    <div className="flex items-center gap-2">
+                      <Input 
+                        id="secondaryColor" 
+                        type="color" 
+                        value={templateData.secondaryColor}
+                        onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                        className="w-16 h-10 p-1"
+                      />
+                      <Input 
+                        value={templateData.secondaryColor}
+                        onChange={(e) => setTemplateData(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                        className="flex-grow"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="fontFamily">Font Family</Label>
+                    <Select 
+                      value={templateData.fontFamily} 
+                      onValueChange={(value) => setTemplateData(prev => ({ ...prev, fontFamily: value }))}
+                    >
+                      <SelectTrigger id="fontFamily">
+                        <SelectValue placeholder="Select a font" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="'Inter', sans-serif">Inter</SelectItem>
+                        <SelectItem value="'Arial', sans-serif">Arial</SelectItem>
+                        <SelectItem value="'Helvetica', sans-serif">Helvetica</SelectItem>
+                        <SelectItem value="'Georgia', serif">Georgia</SelectItem>
+                        <SelectItem value="'Roboto', sans-serif">Roboto</SelectItem>
+                        <SelectItem value="'Lato', sans-serif">Lato</SelectItem>
+                        <SelectItem value="'Open Sans', sans-serif">Open Sans</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="col-span-2 space-y-4 mt-2">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label htmlFor="fontSize">Font Size: {templateData.fontSize}px</Label>
+                        <span className="text-sm text-muted-foreground">{templateData.fontSize}px</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">8</span>
+                        <input 
+                          id="fontSize" 
+                          type="range" 
+                          min="8" 
+                          max="18" 
+                          step="1" 
+                          value={templateData.fontSize}
+                          onChange={(e) => setTemplateData(prev => ({ ...prev, fontSize: parseInt(e.target.value) || 14 }))}
+                          className="flex-grow h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+                        />
+                        <span className="text-sm text-muted-foreground">18</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label htmlFor="lineHeight">Line Height: {templateData.lineHeight}</Label>
+                        <span className="text-sm text-muted-foreground">{templateData.lineHeight}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">1.0</span>
+                        <input 
+                          id="lineHeight" 
+                          type="range" 
+                          min="1" 
+                          max="2" 
+                          step="0.1" 
+                          value={templateData.lineHeight}
+                          onChange={(e) => setTemplateData(prev => ({ ...prev, lineHeight: parseFloat(e.target.value) || 1.5 }))}
+                          className="flex-grow h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+                        />
+                        <span className="text-sm text-muted-foreground">2.0</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label htmlFor="sectionSpacing">Section Spacing: {templateData.sectionSpacing}px</Label>
+                        <span className="text-sm text-muted-foreground">{templateData.sectionSpacing}px</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">10</span>
+                        <input 
+                          id="sectionSpacing" 
+                          type="range" 
+                          min="10" 
+                          max="50"
+                          step="2"
+                          value={templateData.sectionSpacing}
+                          onChange={(e) => setTemplateData(prev => ({ ...prev, sectionSpacing: parseInt(e.target.value) || 24 }))}
+                          className="flex-grow h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+                        />
+                        <span className="text-sm text-muted-foreground">50</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label htmlFor="itemSpacing">Item Spacing: {templateData.itemSpacing}px</Label>
+                        <span className="text-sm text-muted-foreground">{templateData.itemSpacing}px</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">5</span>
+                        <input 
+                          id="itemSpacing" 
+                          type="range" 
+                          min="5" 
+                          max="30"
+                          step="1"
+                          value={templateData.itemSpacing}
+                          onChange={(e) => setTemplateData(prev => ({ ...prev, itemSpacing: parseInt(e.target.value) || 12 }))}
+                          className="flex-grow h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+                        />
+                        <span className="text-sm text-muted-foreground">30</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end mt-6">
+                  <Button
+                    onClick={handleSaveTemplate}
+                    disabled={isSaving}
+                    className="min-w-[120px]"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : "Save Template"}
+                  </Button>
+                </div>
               </div>
-              
-              <div className="flex justify-end mt-6">
-                <Button
-                  onClick={handleSaveTemplate}
-                  disabled={isSaving}
-                  className="min-w-[120px]"
-                >
-                  {isSaving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Saving...
-                    </>
-                  ) : "Save Template"}
+            </Card>
+
+            {/* Preview */}
+            <Card className="p-4 h-[calc(100vh-12rem)] flex flex-col">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-lg font-medium">Preview</h2>
+                <Button variant="ghost" size="sm" onClick={() => setIsPreviewLoading(true)}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Refresh Preview
                 </Button>
               </div>
-            </div>
-          </Card>
+              <Separator className="my-2" />
+              <div className="flex-grow min-h-0 overflow-auto bg-white rounded border flex justify-center items-center p-4">
+                <div 
+                  className="bg-white shadow-xl border border-gray-200 rounded-sm relative"
+                  style={{
+                    width: '100%',
+                    maxWidth: '420px',
+                    height: 'auto',
+                    aspectRatio: '1/1.414',
+                    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <HtmlRenderer 
+                    key={isPreviewLoading ? Date.now() : undefined}
+                    html={templateData.htmlContent} 
+                    css={getComputedCss()}
+                    onRender={() => setIsPreviewLoading(false)}
+                  />
+                </div>
+              </div>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
