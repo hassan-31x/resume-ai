@@ -102,7 +102,20 @@ model Template {
   id          String           @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  htmlContent String           // HTML content of the template
+  
+  // Component-based HTML structure (replacing htmlContent)
+  headerHTML      String       // Header with name and title
+  contactHTML     String       // Contact information section
+  educationTitleHTML String    // Education section title
+  educationItemHTML String     // Individual education item
+  experienceTitleHTML String   // Experience section title
+  experienceItemHTML String    // Individual experience item
+  skillsTitleHTML String       // Skills section title
+  skillsItemHTML  String       // Individual skill or skill category
+  projectsTitleHTML String?    // Projects section title (optional)
+  projectsItemHTML String?     // Individual project item (optional)
+  
+  // Keep single CSS field
   cssStyles   String           // CSS styles for the template
   thumbnail   String?          // URL to template thumbnail image
   category    TemplateCategory @default(PROFESSIONAL)

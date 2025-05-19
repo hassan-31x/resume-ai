@@ -32,7 +32,7 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
           fontSize = `${fontSizeMatch[1]}px`;
         }
         
-        // Set iframe content
+        // Set iframe content with CSS variables for consistent styling
         const document = iframeRef.current.contentDocument;
         if (document) {
           document.open();
@@ -43,26 +43,36 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <style>
+                :root {
+                  --primary-color: #4A6CF7;
+                  --secondary-color: #6E82A6;
+                  --font-family: 'Inter', sans-serif;
+                  --font-size: ${fontSize};
+                  --line-height: 1.5;
+                  --section-spacing: 24px;
+                  --item-spacing: 12px;
+                }
+                
                 body {
                   margin: 0;
                   padding: 0;
-                  font-family: Arial, sans-serif;
+                  font-family: var(--font-family);
                   width: 100%;
                   height: auto;
-                  font-size: ${fontSize}; /* Using template's font size */
+                  font-size: var(--font-size);
                   aspect-ratio: 1/1.414;
                   box-sizing: border-box;
                   transform-origin: top left;
                   background-color: white;
                   color: #333;
-                  line-height: 1.5;
+                  line-height: var(--line-height);
                   -webkit-print-color-adjust: exact;
                   print-color-adjust: exact;
                 }
                 
                 /* Set root font size to scale with body width */
                 html {
-                  font-size: calc(${fontSize} * 0.9); /* Base size from template */
+                  font-size: calc(var(--font-size) * 0.9);
                 }
                 
                 .resume-container {
@@ -98,11 +108,11 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                     margin: 0;
                     padding: 0;
                     transform: none !important;
-                    font-size: ${fontSize}; /* Maintain template font size in print */
+                    font-size: var(--font-size);
                   }
                   
                   html {
-                    font-size: ${fontSize}; /* Lock font size for print */
+                    font-size: var(--font-size);
                   }
                   
                   .resume-container {
@@ -141,10 +151,10 @@ export default function HtmlRenderer({ html, css, className = "", onRender, onEr
                   // Adjust font size based on scale if needed
                   if (scale < 0.7) {
                     // For smaller containers, reduce base font size slightly
-                    document.documentElement.style.fontSize = (parseFloat('${fontSize}') * 0.9) + 'px';
+                    document.documentElement.style.fontSize = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size')) * 0.9) + 'px';
                   } else if (scale > 1.2) {
                     // Prevent fonts from getting too large on big screens
-                    document.documentElement.style.fontSize = (parseFloat('${fontSize}') * 0.95) + 'px';
+                    document.documentElement.style.fontSize = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size')) * 0.95) + 'px';
                   }
                   
                   // Center the content

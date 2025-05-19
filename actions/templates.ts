@@ -17,7 +17,16 @@ const TemplateSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  htmlContent: z.string().min(1, { message: "HTML content is required" }),
+  headerHTML: z.string().min(1, { message: "Header HTML is required" }),
+  contactHTML: z.string().min(1, { message: "Contact HTML is required" }),
+  educationTitleHTML: z.string().min(1, { message: "Education Title HTML is required" }),
+  educationItemHTML: z.string().min(1, { message: "Education Item HTML is required" }),
+  experienceTitleHTML: z.string().min(1, { message: "Experience Title HTML is required" }),
+  experienceItemHTML: z.string().min(1, { message: "Experience Item HTML is required" }),
+  skillsTitleHTML: z.string().min(1, { message: "Skills Title HTML is required" }),
+  skillsItemHTML: z.string().min(1, { message: "Skills Item HTML is required" }),
+  projectsTitleHTML: z.string().min(1, { message: "Projects Title HTML is required" }),
+  projectsItemHTML: z.string().min(1, { message: "Projects Item HTML is required" }),
   cssStyles: z.string().min(1, { message: "CSS styles are required" }),
   thumbnail: z.string().optional(),
   category: z.enum([
@@ -39,9 +48,9 @@ export async function getPublicTemplates() {
     const templates = await db.template.findMany({
       where: {
         isPublic: true,
-        htmlContent: {
+        headerHTML: {
           not: ""
-        }
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -58,7 +67,17 @@ export async function getPublicTemplates() {
     
     // Filter out any templates that might have null htmlContent
     const validTemplates = templates.filter(template => 
-      template.htmlContent !== null && template.htmlContent !== undefined
+      template.headerHTML !== null && template.headerHTML !== undefined
+      // template.contactHTML !== null && template.contactHTML !== undefined &&
+      // template.educationTitleHTML !== null && template.educationTitleHTML !== undefined &&
+      // template.educationItemHTML !== null && template.educationItemHTML !== undefined &&
+      // template.experienceTitleHTML !== null && template.experienceTitleHTML !== undefined &&
+      // template.experienceItemHTML !== null && template.experienceItemHTML !== undefined &&
+      // template.skillsTitleHTML !== null && template.skillsTitleHTML !== undefined &&
+      // template.skillsItemHTML !== null && template.skillsItemHTML !== undefined &&
+      // template.projectsTitleHTML !== null && template.projectsTitleHTML !== undefined &&
+      // template.projectsItemHTML !== null && template.projectsItemHTML !== undefined &&
+      // template.cssStyles !== null && template.cssStyles !== undefined
     );
     
     return { templates: validTemplates };
@@ -101,7 +120,7 @@ export async function getTemplateById(id: string) {
     }
     
     // Check if template has valid HTML content
-    if (!template.htmlContent) {
+    if (!template.headerHTML) {
       return {
         template: null,
         error: "This template is no longer supported. It may have been created with an older version of the application."
@@ -135,13 +154,22 @@ export async function createTemplate(
       return { error: "Invalid fields" };
     }
 
-    const { name, description, htmlContent, cssStyles, thumbnail, category, tags, isPublic } = validatedFields.data;
+    const { name, description, headerHTML, contactHTML, educationTitleHTML, educationItemHTML, experienceTitleHTML, experienceItemHTML, skillsTitleHTML, skillsItemHTML, projectsTitleHTML, projectsItemHTML, cssStyles, thumbnail, category, tags, isPublic } = validatedFields.data;
 
     await db.template.create({
       data: {
         name,
         description,
-        htmlContent,
+        headerHTML,
+        contactHTML,
+        educationTitleHTML,
+        educationItemHTML,
+        experienceTitleHTML,
+        experienceItemHTML,
+        skillsTitleHTML,
+        skillsItemHTML,
+        projectsTitleHTML,
+        projectsItemHTML,
         cssStyles,
         thumbnail,
         category: category as TemplateCategory,
@@ -177,7 +205,7 @@ export async function updateTemplate(
       return { error: "Invalid fields" };
     }
 
-    const { id, name, description, htmlContent, cssStyles, thumbnail, category, tags, isPublic } = validatedFields.data;
+    const { id, name, description, headerHTML, contactHTML, educationTitleHTML, educationItemHTML, experienceTitleHTML, experienceItemHTML, skillsTitleHTML, skillsItemHTML, projectsTitleHTML, projectsItemHTML, cssStyles, thumbnail, category, tags, isPublic } = validatedFields.data;
 
     if (!id) {
       return { error: "Template ID is required" };
@@ -202,12 +230,18 @@ export async function updateTemplate(
       data: {
         name,
         description,
-        htmlContent,
+        headerHTML,
+        contactHTML,
+        educationTitleHTML,
+        educationItemHTML,
+        experienceTitleHTML,
+        experienceItemHTML,
+        skillsTitleHTML,
+        skillsItemHTML,
+        projectsTitleHTML,
+        projectsItemHTML,
         cssStyles,
         thumbnail,
-        category: category as TemplateCategory,
-        tags: tags || existingTemplate.tags,
-        isPublic,
       },
     });
 
@@ -260,7 +294,7 @@ export async function getUserTemplates(userId: string) {
     const templates = await db.template.findMany({
       where: {
         userId,
-        htmlContent: {
+        headerHTML: {
           not: ""
         }
       },
@@ -276,7 +310,7 @@ export async function getUserTemplates(userId: string) {
         },
       },
     })
-    .then(templates => templates.filter(template => template.htmlContent !== null && template.htmlContent !== ""));
+    .then(templates => templates.filter(template => template.headerHTML !== null && template.headerHTML !== ""));
 
     return { templates };
   } catch (error) {
@@ -294,7 +328,7 @@ export async function getAdminTemplates() {
     const templates = await db.template.findMany({
       where: {
         isAdminCreated: true,
-        htmlContent: {
+        headerHTML: {
           not: ""
         }
       },
@@ -310,7 +344,7 @@ export async function getAdminTemplates() {
         },
       },
     })
-    .then(templates => templates.filter(template => template.htmlContent !== null && template.htmlContent !== ""));
+    .then(templates => templates.filter(template => template.headerHTML !== null && template.headerHTML !== ""));
 
     return { templates };
   } catch (error) {
@@ -328,7 +362,7 @@ export async function getTemplatesByCategoryId(category: TemplateCategory) {
     const templates = await db.template.findMany({
       where: {
         category,
-        htmlContent: {
+        headerHTML: {
           not: ""
         }
       },
@@ -344,7 +378,7 @@ export async function getTemplatesByCategoryId(category: TemplateCategory) {
         },
       },
     })
-    .then(templates => templates.filter(template => template.htmlContent !== null && template.htmlContent !== ""));
+    .then(templates => templates.filter(template => template.headerHTML !== null && template.headerHTML !== ""));
 
     return { templates };
   } catch (error) {

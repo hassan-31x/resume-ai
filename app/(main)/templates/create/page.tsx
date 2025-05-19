@@ -684,7 +684,7 @@ li {
                         <input 
                           id="fontSize" 
                           type="range" 
-                          min="8" 
+                          min="2" 
                           max="18" 
                           step="1" 
                           value={templateData.fontSize}

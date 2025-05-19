@@ -19,106 +19,94 @@ async function main() {
 
   console.log("Admin user created:", admin.id);
 
-  // Templates with HTML and CSS
+  // Templates with component-based HTML and CSS
   const templates = [
     {
       name: "Professional Classic",
       description: "A clean, professional resume template with a traditional layout",
-      htmlContent: `<div class="resume">
-  <header class="header">
-    <h1>John Doe</h1>
-    <p class="contact-info">
-      123 Main Street, City, State 12345 | (123) 456-7890 | john.doe@email.com | linkedin.com/in/johndoe
-    </p>
-  </header>
-  
-  <section class="resume-section">
-    <h2>Education</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>University Name</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>Bachelor of Science in Computer Science</p>
-        <span class="date">Expected Graduation: May 2024</span>
-      </div>
-      <p>GPA: 3.8/4.0</p>
-    </div>
-  </section>
-
-  <section class="resume-section">
-    <h2>Experience</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Company Name</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>Software Engineering Intern</p>
-        <span class="date">June 2023 - August 2023</span>
-      </div>
-      <ul>
-        <li>Developed and maintained features for the company's main web application using React and Node.js</li>
-        <li>Collaborated with cross-functional teams to implement new features and fix bugs</li>
-        <li>Improved application performance by 30% by optimizing database queries</li>
-      </ul>
-    </div>
-
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Another Company</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>Technical Assistant</p>
-        <span class="date">January 2022 - May 2022</span>
-      </div>
-      <ul>
-        <li>Assisted in troubleshooting technical issues for clients</li>
-        <li>Created documentation for internal processes</li>
-        <li>Participated in weekly team meetings to discuss progress and roadblocks</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="resume-section">
-    <h2>Projects</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Project Name</h3>
-        <span class="location">GitHub: github.com/johndoe/project</span>
-      </div>
-      <ul>
-        <li>Built a web application using React, Node.js, and MongoDB</li>
-        <li>Implemented user authentication and authorization</li>
-        <li>Deployed the application on AWS</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="resume-section">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-category">
-        <h3>Programming Languages:</h3>
-        <p>Java, Python, JavaScript, HTML/CSS, SQL</p>
-      </div>
-      <div class="skill-category">
-        <h3>Frameworks & Libraries:</h3>
-        <p>React, Node.js, Express, Django</p>
-      </div>
-      <div class="skill-category">
-        <h3>Tools & Technologies:</h3>
-        <p>Git, Docker, AWS, MongoDB, PostgreSQL</p>
-      </div>
-      <div class="skill-category">
-        <h3>Soft Skills:</h3>
-        <p>Problem Solving, Communication, Teamwork, Leadership</p>
-      </div>
-    </div>
-  </section>
+      
+      // Component-based HTML structure
+      headerHTML: `<header class="header">
+  <h1>{{fullName}}</h1>
+  <p class="contact-info">{{jobTitle}}</p>
+</header>`,
+      
+      contactHTML: `<p class="contact-info">
+  {{location}} | {{phone}} | {{email}} | {{linkedin}}
+</p>`,
+      
+      educationTitleHTML: `<section class="resume-section">
+  <h2>Education</h2>`,
+      
+      educationItemHTML: `<div class="resume-item">
+  <div class="item-header">
+    <h3>{{school}}</h3>
+    <span class="location">{{location}}</span>
+  </div>
+  <div class="item-subheader">
+    <p>{{degree}}</p>
+    <span class="date">{{startDate}} - {{endDate}}</span>
+  </div>
+  <p>GPA: {{gpa}}</p>
 </div>`,
+      
+      experienceTitleHTML: `<section class="resume-section">
+  <h2>Experience</h2>`,
+      
+      experienceItemHTML: `<div class="resume-item">
+  <div class="item-header">
+    <h3>{{title}}</h3>
+    <span class="location">{{company}}, {{location}}</span>
+  </div>
+  <div class="item-subheader">
+    <p></p>
+    <span class="date">{{startDate}} - {{endDate}}</span>
+  </div>
+  <ul>
+    {{#responsibilities}}
+    <li>{{.}}</li>
+    {{/responsibilities}}
+  </ul>
+</div>`,
+      
+      skillsTitleHTML: `<section class="resume-section">
+  <h2>Skills</h2>`,
+      
+      skillsItemHTML: `<div class="skills-grid">
+  <div class="skill-category">
+    <h3>Languages:</h3>
+    <p>{{languages}}</p>
+  </div>
+  <div class="skill-category">
+    <h3>Frameworks:</h3>
+    <p>{{frameworks}}</p>
+  </div>
+  <div class="skill-category">
+    <h3>Databases:</h3>
+    <p>{{databases}}</p>
+  </div>
+  <div class="skill-category">
+    <h3>Tools:</h3>
+    <p>{{tools}}</p>
+  </div>
+</div>`,
+      
+      projectsTitleHTML: `<section class="resume-section">
+  <h2>Projects</h2>`,
+      
+      projectsItemHTML: `<div class="resume-item">
+  <div class="item-header">
+    <h3>{{title}}</h3>
+    <span class="location">{{link}}</span>
+  </div>
+  <p>{{description}}</p>
+  <ul>
+    {{#points}}
+    <li>{{.}}</li>
+    {{/points}}
+  </ul>
+</div>`,
+      
       cssStyles: `.resume {
   max-width: 100%;
   margin: 0 auto;
@@ -237,123 +225,69 @@ li {
     {
       name: "Academic CV",
       description: "A comprehensive academic CV template for researchers and professors",
-      htmlContent: `<div class="resume">
-  <header class="header">
-    <h1>Dr. Jane Smith</h1>
-    <p class="contact-info">
-      Department of Computer Science, University Name<br>
-      123 University Ave, City, State 12345<br>
-      jane.smith@university.edu | (123) 456-7890 | university.edu/~jsmith
-    </p>
-  </header>
-  
-  <section class="resume-section">
-    <h2>Education</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>University Name</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>Ph.D. in Computer Science</p>
-        <span class="date">2015 - 2020</span>
-      </div>
-      <p>Dissertation: "Title of Dissertation"<br>
-      Advisor: Professor Name</p>
-    </div>
-    
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Another University</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>M.S. in Computer Science</p>
-        <span class="date">2013 - 2015</span>
-      </div>
-    </div>
-  </section>
-  
-  <section class="resume-section">
-    <h2>Academic Appointments</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>University Name</h3>
-        <span class="location">City, State</span>
-      </div>
-      <div class="item-subheader">
-        <p>Assistant Professor, Department of Computer Science</p>
-        <span class="date">2020 - Present</span>
-      </div>
-      <ul>
-        <li>Teaching undergraduate and graduate courses in artificial intelligence and machine learning</li>
-        <li>Supervising 3 Ph.D. students and 5 M.S. students</li>
-        <li>Leading research projects in natural language processing and computer vision</li>
-      </ul>
-    </div>
-  </section>
-  
-  <section class="resume-section">
-    <h2>Research Interests</h2>
-    <p>Artificial Intelligence, Machine Learning, Natural Language Processing, Computer Vision</p>
-  </section>
-  
-  <section class="resume-section">
-    <h2>Publications</h2>
-    <div class="resume-item">
-      <h3 class="subsection-title">Journal Articles</h3>
-      <ol class="publication-list">
-        <li>Smith, J., Johnson, A., et al. (2022). "Title of paper." <em>Journal Name</em>, 10(2), 123-145.</li>
-        <li>Smith, J., Williams, B., et al. (2021). "Another paper title." <em>Another Journal</em>, 5(3), 67-89.</li>
-      </ol>
-    </div>
-    
-    <div class="resume-item">
-      <h3 class="subsection-title">Conference Proceedings</h3>
-      <ol class="publication-list">
-        <li>Smith, J., Davis, C., et al. (2022). "Conference paper title." In <em>Proceedings of the Conference Name</em>, pp. 234-245.</li>
-        <li>Smith, J., Brown, D., et al. (2021). "Another conference paper." In <em>Proceedings of Another Conference</em>, pp. 345-356.</li>
-      </ol>
-    </div>
-  </section>
-  
-  <section class="resume-section">
-    <h2>Grants and Funding</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Title of Grant</h3>
-        <span class="location">$500,000</span>
-      </div>
-      <div class="item-subheader">
-        <p>Funding Agency</p>
-        <span class="date">2021 - 2024</span>
-      </div>
-      <p>Role: Principal Investigator</p>
-    </div>
-  </section>
-  
-  <section class="resume-section">
-    <h2>Teaching Experience</h2>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Introduction to Artificial Intelligence</h3>
-        <span class="date">Fall 2020, Spring 2021, Fall 2021</span>
-      </div>
-    </div>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Advanced Machine Learning</h3>
-        <span class="date">Spring 2021, Spring 2022</span>
-      </div>
-    </div>
-    <div class="resume-item">
-      <div class="item-header">
-        <h3>Natural Language Processing</h3>
-        <span class="date">Fall 2020, Fall 2021</span>
-      </div>
-    </div>
-  </section>
+      
+      // Component-based HTML structure
+      headerHTML: `<header class="header">
+  <h1>{{fullName}}</h1>
+  <p class="contact-info">{{jobTitle}}</p>
+</header>`,
+      
+      contactHTML: `<p class="contact-info">
+  Department of Computer Science, University Name<br>
+  {{location}} | {{phone}} | {{email}} | {{website}}
+</p>`,
+      
+      educationTitleHTML: `<section class="resume-section">
+  <h2>Education</h2>`,
+      
+      educationItemHTML: `<div class="resume-item">
+  <div class="item-header">
+    <h3>{{school}}</h3>
+    <span class="location">{{location}}</span>
+  </div>
+  <div class="item-subheader">
+    <p>{{degree}}</p>
+    <span class="date">{{startDate}} - {{endDate}}</span>
+  </div>
+  <p>Dissertation: "Title of Dissertation"<br>
+  Advisor: Professor Name</p>
 </div>`,
+      
+      experienceTitleHTML: `<section class="resume-section">
+  <h2>Academic Appointments</h2>`,
+      
+      experienceItemHTML: `<div class="resume-item">
+  <div class="item-header">
+    <h3>{{title}}</h3>
+    <span class="location">{{company}}, {{location}}</span>
+  </div>
+  <div class="item-subheader">
+    <p></p>
+    <span class="date">{{startDate}} - {{endDate}}</span>
+  </div>
+  <ul>
+    {{#responsibilities}}
+    <li>{{.}}</li>
+    {{/responsibilities}}
+  </ul>
+</div>`,
+      
+      skillsTitleHTML: `<section class="resume-section">
+  <h2>Research Interests</h2>`,
+      
+      skillsItemHTML: `<p>{{technical}}</p>`,
+      
+      projectsTitleHTML: `<section class="resume-section">
+  <h2>Publications</h2>`,
+      
+      projectsItemHTML: `<div class="resume-item">
+  <h3 class="subsection-title">Journal Articles</h3>
+  <ol class="publication-list">
+    <li>{{fullName}}, et al. (2022). "{{title}}." <em>Journal Name</em>, 10(2), 123-145.</li>
+    <li>{{fullName}}, et al. (2021). "Another paper title." <em>Another Journal</em>, 5(3), 67-89.</li>
+  </ol>
+</div>`,
+      
       cssStyles: `.resume {
   max-width: 100%;
   margin: 0 auto;
