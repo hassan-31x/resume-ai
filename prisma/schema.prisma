@@ -30,6 +30,14 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   templates             Template[]             @relation("CreatedTemplates")
+  
+  // Personal information
+  personalInfo          PersonalInfo?
+  workExperiences       WorkExperience[]
+  educationEntries      Education[]
+  projectEntries        Project[]
+  certificateEntries    Certificate[]
+  skillEntries          SkillCategory[]
 }
 
 model Account {
@@ -139,4 +147,185 @@ model Template {
 
   // For easy identification of admin-created templates
   isAdminCreated Boolean       @default(false)
+}
+
+// Personal information models for users
+
+model PersonalInfo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Basic personal details
+  firstName   String?
+  lastName    String?
+  jobTitle    String?
+  
+  // Contact information
+  email       String?
+  phone       String?
+  website     String?
+  
+  // Location
+  city        String?
+  state       String?
+  country     String?
+  
+  // Online presence
+  linkedinUrl String?
+  githubUrl   String?
+  twitterUrl  String?
+  portfolioUrl String?
+  
+  // Professional summary
+  professionalSummary String?
+  
+  // Professional photo
+  profilePhotoUrl String?
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // User relation (one-to-one)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @unique @db.ObjectId
+}
+
+model WorkExperience {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Company details
+  companyName   String
+  jobTitle      String
+  location      String?
+  
+  // Dates
+  startDate     DateTime
+  endDate       DateTime?
+  isCurrentJob  Boolean  @default(false)
+  
+  // Job details
+  responsibilities String[]
+  achievements    String[]
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // User relation
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @db.ObjectId
+}
+
+model Education {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // School details
+  schoolName    String
+  degree        String
+  fieldOfStudy  String?
+  location      String?
+  
+  // Dates
+  startDate     DateTime
+  endDate       DateTime?
+  isCurrentlyStudying Boolean @default(false)
+  
+  // Academic details
+  gpa           String?
+  achievements  String[]
+  relevantCourses String[]
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // User relation
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @db.ObjectId
+}
+
+model Project {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Project details
+  title         String
+  description   String
+  
+  // Project links
+  projectUrl    String?
+  githubUrl     String?
+  
+  // Dates
+  startDate     DateTime?
+  endDate       DateTime?
+  isOngoing     Boolean  @default(false)
+  
+  // Project information
+  technologies  String[]
+  keyPoints     String[]
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // User relation
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @db.ObjectId
+}
+
+model Certificate {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Certificate details
+  name              String
+  issuingOrganization String
+  issueDate         DateTime
+  expirationDate    DateTime?
+  neverExpires      Boolean  @default(false)
+  
+  // Certificate links
+  credentialId      String?
+  credentialUrl     String?
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // User relation
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String   @db.ObjectId
+}
+
+model SkillCategory {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Category details
+  name              String
+  
+  // Skills in this category
+  skills            Skill[]
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // User relation
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String   @db.ObjectId
+}
+
+model Skill {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Skill details
+  name              String
+  proficiencyLevel  Int?     // 1-5 scale
+  
+  // Category relation
+  category          SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId        String   @db.ObjectId
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

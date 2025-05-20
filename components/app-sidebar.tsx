@@ -8,7 +8,8 @@ import {
   User, 
   FileEdit,
   LogOut,
-  CircleUser
+  CircleUser,
+  UserCircle
 } from 'lucide-react'
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar'
@@ -56,6 +57,12 @@ const AppSidebar = async () => {
                 <Button variant="ghost" className="w-full justify-start">
                   <FileEdit className="mr-2 h-4 w-4" />
                   My Resumes
+                </Button>
+              </Link>
+              <Link href="/profile">
+                <Button variant="ghost" className="w-full justify-start">
+                  <UserCircle className="mr-2 h-4 w-4" />
+                  My Information
                 </Button>
               </Link>
             </div>
