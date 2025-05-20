@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getTemplateById } from "@/actions/templates";
-import TemplateView from "../components/template-view";
+import TemplateView from "../_components/template-view";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText } from "lucide-react";
 import Link from "next/link";

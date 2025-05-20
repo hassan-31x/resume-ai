@@ -11,7 +11,7 @@ import { Calendar, Eye, Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import HtmlRenderer from "@/components/html-renderer";
 import { useToast } from "@/components/ui/use-toast";
-import { assembleTemplate } from "@/app/utils/template-assembler";
+import { assembleTemplate } from "@/utils/template-assembler";
 import { dummyResumeData } from "@/utils/dummy-resume-data";
 
 type TemplateWithCreator = Template & {

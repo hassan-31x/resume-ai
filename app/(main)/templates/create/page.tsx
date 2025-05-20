@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { TemplateEditor } from "../components/template-editor";
+import { TemplateEditor } from "../_components/template-editor";
 import { useToast } from "@/components/ui/use-toast";
 import { createTemplate } from "@/actions/create-template";
 import type { CreateTemplateData } from "@/actions/create-template";

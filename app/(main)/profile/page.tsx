@@ -15,12 +15,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 // Import section components
-import PersonalInfoForm from "./components/personal-info-form";
-import ExperienceSection from "./components/experience-section";
-import EducationSection from "./components/education-section";
-import ProjectsSection from "./components/projects-section";
-import CertificatesSection from "./components/certificates-section";
-import SkillsSection from "./components/skills-section";
+import PersonalInfoForm from "./_components/personal-info-form";
+import ExperienceSection from "./_components/experience-section";
+import EducationSection from "./_components/education-section";
+import ProjectsSection from "./_components/projects-section";
+import CertificatesSection from "./_components/certificates-section";
+import SkillsSection from "./_components/skills-section";
 
 // Profile page component
 export default function ProfilePage() {
